@@ -11,7 +11,7 @@
 
   <!-- Output the log message to log file -->
   <appender name="appxRollingSysLogAppender" class="org.apache.log4j.RollingFileAppender">
-    <param name="file" value="/var/log/adept/appxLogFile.log" />
+    <param name="file" value="./appxLogFile.log" />
     <param name="append" value="true" />
     <param name="MaxFileSize" value="10MB" />
     <param name="MaxBackupIndex" value="100" />
@@ -22,7 +22,7 @@
 
   <!-- Output the log message to an XML format for reading by Chainsaw -->
   <appender name="appxRollingSysLogAppenderXml" class="org.apache.log4j.RollingFileAppender">
-    <param name="file" value="/var/log/adept/appxXmlLog.xml" />
+    <param name="file" value="./appxXmlLog.xml" />
     <param name="append" value="true" />
     <param name="MaxFileSize" value="10MB" />
     <param name="MaxBackupIndex" value="100" />

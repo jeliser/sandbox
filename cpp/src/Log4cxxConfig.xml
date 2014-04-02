@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <!-- Output the log message to system console. -->
+  <appender name="appxConsoleAppender" class="org.apache.log4j.ConsoleAppender">    
+    <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %c{1} - %m%n"/>
+        </layout>
+  </appender>
+
+  <!-- Output the log message to log file -->
+  <appender name="appxRollingSysLogAppender" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="/var/log/adept/appxLogFile.log" />
+    <param name="append" value="true" />
+    <param name="MaxFileSize" value="10MB" />
+    <param name="MaxBackupIndex" value="100" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %-5p %C{2} (%F:%L) - %m%n" />
+    </layout>
+  </appender>
+
+  <!-- Output the log message to an XML format for reading by Chainsaw -->
+  <appender name="appxRollingSysLogAppenderXml" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="/var/log/adept/appxXmlLog.xml" />
+    <param name="append" value="true" />
+    <param name="MaxFileSize" value="10MB" />
+    <param name="MaxBackupIndex" value="100" />
+    <layout class="org.apache.log4j.xml.XMLLayout" />
+  </appender>
+
+  <!-- Output the log message over a socket -->
+  <appender name="appxChainsawAppenderXML" class="org.apache.log4j.XMLSocketAppender">
+    <param name="RemoteHost" value="127.0.0.1"/>
+    <param name="Port" value="4448" />
+    <layout class="org.apache.log4j.xml.XMLLayout">
+      <param name="properties" value="true" />
+      <param name="locationinfo" value="true" />
+    </layout>
+  </appender>
+
+  <!-- Configure the root logger -->
+  <root>
+    <priority value="all" />
+    <appender-ref ref="appxRollingSysLogAppenderXml" />
+    <appender-ref ref="appxRollingSysLogAppender" />
+    <appender-ref ref="appxConsoleAppender" />
+    <appender-ref ref="appxChainsawAppenderXML" />
+  </root>
+
+  <!-- Specify the level for some specific categories -->
+  <!-- TODO: We should be able to use this for the device drivers -->
+  <category name="functionA" >
+    <priority value ="info" />
+    <appender-ref ref="appxRollingSysLogAppenderXml"/>
+    <appender-ref ref="appxRollingSysLogAppender"/>
+    <appender-ref ref="appxConsoleAppender"/>
+  </category>
+
+</log4j:configuration>

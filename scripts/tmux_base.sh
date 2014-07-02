@@ -1,5 +1,5 @@
 #!/bin/bash
-#tmux_sandbox.sh
+#tmux_base.sh
  
 SESSIONNAME="Base_View"
 tmux has-session -t $SESSIONNAME >> /dev/null
@@ -17,9 +17,12 @@ if [ $? -ne 0 ]
     #tmux send-keys 'mkdir ./bin' 'C-m'
  
     tmux select-pane -t 3
+    tmux resize-pane -U 8
+    tmux attach -t $SESSIONNAME
+else
+  echo "Execute 'tmux attach -t \"$SESSIONNAME\"' if you would like to attach"
 fi
  
-tmux attach -t $SESSIONNAME
 
 
 

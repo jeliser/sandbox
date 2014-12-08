@@ -1,5 +1,5 @@
 
-all: dir log4cxx kill_thread
+all: dir log4cxx cmdline_args kill_thread
 
 SRC_PATH="./src"
 BIN_PATH="./bin"
@@ -13,6 +13,9 @@ log4cxx:
 
 kill_thread:
 	g++ $(SRC_PATH)/kill_thread.cpp -o $(BIN_PATH)/kill_thread
+
+cmdline_args:
+	g++ $(SRC_PATH)/cmdline_args.cpp -o $(BIN_PATH)/cmdline_args
 
 clean:
 	rm -rf $(BIN_PATH)

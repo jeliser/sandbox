@@ -82,11 +82,5 @@ int main(int argc, char * argv[]) {
   cout << tName << endl;
   cout << tid << endl;
 
-/*
-  if(tgkill(tgid, tid, sig)) {
-    printf("Failed to kill: %s (%d)", threadName.c_str(), tid);
-  }
-*/
-
   return(0);
 }

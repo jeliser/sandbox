@@ -52,28 +52,59 @@ int main(int argc, char * argv[]) {
       {"tid",     required_argument, 0, 't'},
       {"tname",   required_argument, 0, 'n'},
     };
+/*
+           struct option {
+               const char *name;
+               int         has_arg;
+               int        *flag;
+               int         val;
+           };
+*/
   /* getopt_long stores the option index here. */
+  int option_list_size = sizeof(long_options) / sizeof(struct option);
+  cout << option_list_size << endl;
   int option_index = 0;
 
   int c = 0;
-  while((c = getopt_long (argc, argv, "ht:n:P:N:", long_options, &option_index)) != -1) {
+  char arg_list[] = "ht:n:P:N:";
+  while((c = getopt_long (argc, argv, arg_list, long_options, &option_index)) != -1) {
     switch (c) {
-      case 'h':
+      case 'h': {
         show_usage(argv[0]);
-        break;
-      case 'N':
+      };  break;
+      case 'N': {
         pName = optarg;
-        break;
-      case 'P':
+      }; break;
+      case 'P': {
         pid = atoi(optarg);
-        break;
-      case 'n':
+      }; break;
+      case 'n': {
         tName = optarg;
-        break;
-      case 't':
+      }; break;
+      case 't': {
         tid = atoi(optarg);
-        break;
-      default: break;
+      }; break;
+      case '?': {
+        bool req_arg = false;
+        for(int j = 1; j < sizeof(arg_list); j++) {
+          if((arg_list[j] == ':') && (arg_list[j-1] == optopt)) {
+            req_arg = true;
+          }
+        }
+        if(req_arg) {
+          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+        }
+        else if(isprint (optopt)) {
+          fprintf(stderr, "Unknown option '-%c`.\n", optopt);
+        }
+        else {
+          fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
+        }
+        return(-1);
+      }; break;
+      default: {
+        printf("ERR:  Unhandled option\n");
+      }; break;
     }
   }
 

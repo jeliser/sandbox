@@ -13,14 +13,19 @@
 
 using namespace std;
 
-static void show_usage(char * prog) {
-  cerr << "Usage: " << prog << " <option(s)>\n"
+static void show_usage(char* prog) {
+  cerr << "\nUsage: " << prog << " <option(s)>\n"
        << "Options:\n"
        << "\t-P,--pid PROCESS_PID\tSpecify the process's PID\n"
        << "\t-N,--pname PROCESS_NAME\tSpecify the process's NAME\n"
        << "\t-t,--tid THREAD_PID\tSpecify the thread's PID\n"
        << "\t-n,--tname THREAD_NAME\tSpecify the thread's NAME\n"
        << "\t-h,--help\t\tShow this help message\n\n";
+}
+
+static void show_usage_quit(char* prog) {
+  show_usage(prog);
+  exit(-1);
 }
 
 
@@ -33,10 +38,7 @@ int main(int argc, char * argv[]) {
 
   int verbose = 0;
 
-  if(argc == 1) {
-    show_usage(argv[0]);
-    return(-1);
-  }
+  if(argc == 1) { show_usage_quit(argv[0]); }
 
 
   static struct option long_options[] =
@@ -76,6 +78,18 @@ int main(int argc, char * argv[]) {
       default: break;
     }
   }
+
+  /* Sanity check */
+  if(pName == "" && pid == -1) {
+    cerr << "\nMissing PROCESS argument\n";
+    show_usage_quit(argv[0]);
+  }
+  if(tName == "" && tid == -1) {
+    cerr << "\nMissing THREAD argument\n";
+    show_usage_quit(argv[0]);
+  }
+
+
 
   cout << pName << endl;
   cout << pid << endl;

@@ -19,17 +19,18 @@ puts me.respond_to?("say_hi")
 puts me.respond_to?("to_s")
 
 # Allow name to be accessable
-puts me.respond_to?("name")
-puts me.respond_to?("name=")
+puts me.respond_to?("names")
+puts me.respond_to?("names=")
 class Greeter
   # Crazy ass runtime modification of a classes' instance variables.
-  attr_accessor :name
+  attr_accessor :names
 end
-puts me.respond_to?("name")
-puts me.respond_to?("name=")
+puts me.respond_to?("names")
+puts me.respond_to?("names=")
 
 me.say_hi
-me.name = "Tucker"
+me.names = ["Monk", "Gidget", "Tucker"]
 me.say_hi
+me.say_bye
 
 

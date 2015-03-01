@@ -1,19 +1,35 @@
 class Greeter
 
-  #attr_accessor :name
+  # Makes the names attribute public
+  # me = Greeter.new()
+  # me.names = "Josh"
+  #attr_accessor :names
 
-  def initialize(name = "world")
-    # @name is an instance variable accessable by the whole class
-    @name = name
+  def initialize(names = "world")
+    # @names is an instance variable accessable by the whole class
+    @names = names
   end
 
   def say_hi
-    puts "Hello, #{@name.capitalize()}"
+    say("Hello")
   end
 
   def say_bye
-    puts "Goodbye, #{@name.capitalize()}"
+    say("Goodbye")
   end
+
+  private
+    def say(greeting)
+      if @names.nil?
+        puts "Please load a name or names to be greeted."
+      elsif @names.respond_to?("each")
+        @names.each do |name|
+          puts "#{greeting}, #{name.capitalize()}"
+        end
+      else
+        puts "#{greeting}, #{@names.capitalize()}"
+      end     
+    end
 end
 
 

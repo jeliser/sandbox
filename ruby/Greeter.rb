@@ -31,7 +31,7 @@ class Greeter
           puts "#{greeting}, #{@names.join(", ")}"
         end
       else
-        puts "#{greeting}, #{@names.capitalize()}"
+        puts "%s, %s" % [greeting, @names.capitalize()]
       end     
     end
 end

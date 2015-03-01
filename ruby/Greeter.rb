@@ -23,8 +23,12 @@ class Greeter
       if @names.nil?
         puts "Please load a name or names to be greeted."
       elsif @names.respond_to?("each")
-        @names.each do |name|
-          puts "#{greeting}, #{name.capitalize()}"
+        if greeting == "Hello"
+          @names.each do |name|
+            puts "#{greeting}, #{name.capitalize()}"
+          end
+        else
+          puts "#{greeting}, #{@names.join(", ")}"
         end
       else
         puts "#{greeting}, #{@names.capitalize()}"

@@ -1,0 +1,4 @@
+---
+- name: Install Build Dependencies
+  action: apt pkg={{item}} state=installed
+  with_items: { python, gcc }

@@ -1,0 +1,3 @@
+---
+[ jenkins-hardware ]
+127.0.0.1 # This is where you start listing the DNS addresses or IP addresses

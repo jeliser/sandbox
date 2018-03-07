@@ -1,0 +1,7 @@
+---
+- name: Jenkins build setup
+  hosts: '{{target}}'
+  become: yes
+
+  roles:
+    - { role: build/zynq }

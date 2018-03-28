@@ -9,3 +9,7 @@ Wanted to include a quick example of how to use the `test_run_cmd` application i
 Cmd: ls -al | grep pyutils
 drwxrwxr-x  2 jeliser jeliser  4096 Mar 18 17:00 pyutils
 ```
+
+
+# Jinja example
+https://gist.github.com/wrunk/1317933/d204be62e6001ea21e99ca0a90594200ade2511e

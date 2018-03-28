@@ -2,8 +2,7 @@
 
 #include <Python.h>
 
-static PyObject *
-run_cmd(PyObject* self, PyObject* args)
+static PyObject* utils_run(PyObject* self, PyObject* args)
 {
   const char* cmd = NULL;
 
@@ -17,15 +16,14 @@ run_cmd(PyObject* self, PyObject* args)
   Py_RETURN_NONE;
 }
 
-static PyMethodDef UtilsMethods[] = {
-  {"run_cmd", run_cmd, METH_VARARGS, "Run the supplied command"},
+static PyMethodDef UtilMethods[] = {
+  {"run", utils_run, METH_VARARGS, "Run the supplied command"},
   {NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC
-initutils(void)
+PyMODINIT_FUNC initutils(void)
 {
-  (void)Py_InitModule("run_cmd", UtilsMethods);
+  (void)Py_InitModule("_run", UtilMethods);
 }
 
 

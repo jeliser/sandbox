@@ -1,0 +1,31 @@
+message_dictionary:
+  - name: ls
+    message_id: 1325423240
+    response_id: 
+    port:
+    description: 'LIST the contents of a directory.'
+    fields:
+      - name: src
+        description: 'The SOURCE directory.'
+        type: string
+      - name: opts
+        description: 'OPTIONS to be included with the command. (Ex: -al)'
+        type: string
+
+  - name: cp
+    message_id: 9865724560
+    # NOTE Optional fields
+    #response_id: 
+    #port:
+    description: 'Copy a file(s) from SOURCE to DESTINATION.'
+    fields:
+      - name: src
+        description: 'The SOURCE directory.'
+        type: string
+      - name: dst
+        description: 'The DESTINATION directory.'
+        type: string
+      - name: opts
+        description: 'OPTIONS to be included with the command. (Ex: -al)'
+        type: string
+

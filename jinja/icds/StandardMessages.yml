@@ -1,0 +1,29 @@
+message_dictionary:
+  - name: ack 
+    message_id: 4267214240
+    response_id: 
+    port: 50402
+    description: 'Positive acknowledgement sent to signify acknowledgement or receipt of message.'
+    fields:
+      - name: status
+        description: 'Reason why ACK message was sent.'
+        type: uint8_t
+        # NOTE: Enums are for example only. If a field is tied to an enum, it will have this field
+        enum:
+          0: "Success"
+          1: "InProgress"
+
+  - name: nack 
+    message_id: 8546238449
+    response_id: 
+    port: 50402
+    description: 'Negative acknowledgement sent to signify non-acknowledgement or non-receipt of message.'
+    fields:
+      - name: status
+        description: 'Reason why NACK message was sent.'
+        type: uint8_t
+        # NOTE: Enums are for example only. If a field is tied to an enum, it will have this field
+        enum:
+          0: "Success"
+          1: "InProgress"
+

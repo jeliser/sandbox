@@ -1,9 +1,9 @@
 
 all: dir hello_world inotify
 
-SRC_PATH="./src"
-BIN_PATH="./bin"
-CC="gcc"
+SRC_PATH=./src
+BIN_PATH=./bin
+CC=gcc
 
 dir:
 	mkdir -p $(BIN_PATH)

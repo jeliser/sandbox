@@ -1,9 +1,12 @@
 
-all: dir cmdline_args kill_thread periodic_file_writer
+all: dir cmdline_args kill_thread periodic_file_writer linux_copy
 
 SRC_PATH=./src
 BIN_PATH=./bin
-CC="g++"
+#CC=g++ -std=c++11  # C++11
+CC=g++ -std=c++1z  # C++17
+#CC=arm-linux-gnueabi-g++ -std=c++1z  # C++17
+#CC=/opt/Xilinx/SDK/2017.2/gnu/aarch32/lin/gcc-arm-linux-gnueabi/bin/arm-linux-gnueabihf-g++ -std=c++1z  # C++17
 
 dir:
 	mkdir -p $(BIN_PATH)
@@ -19,7 +22,10 @@ cmdline_args:
 	$(CC) $(SRC_PATH)/cmdline_args.cpp -o $(BIN_PATH)/cmdline_args
 
 periodic_file_writer:
-	$(CC) $(SRC_PATH)/periodic_file_writer.cpp -o $(BIN_PATH)/periodic_file_writer -std=c++11
+	$(CC) $(SRC_PATH)/periodic_file_writer.cpp -o $(BIN_PATH)/periodic_file_writer
+
+linux_copy:
+	$(CC) $(SRC_PATH)/linux_copy.cpp -o $(BIN_PATH)/linux_copy -lstdc++fs
 
 clean:
 	rm -rf $(BIN_PATH)

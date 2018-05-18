@@ -1,5 +1,5 @@
 
-all: dir hello_world inotify
+all: dir hello_world inotify filesize_total
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -13,6 +13,9 @@ hello_world:
 
 inotify:
 	$(CC) $(SRC_PATH)/demo_inotify.c -o $(BIN_PATH)/inotify
+
+filesize_total:
+	$(CC) $(SRC_PATH)/prsize.c -o $(BIN_PATH)/filesize_total
 
 clean:
 	rm -rf $(BIN_PATH)

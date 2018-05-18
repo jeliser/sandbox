@@ -19,7 +19,8 @@ int main () {
 
   for( ; !done; ) {
     std::this_thread::sleep_for (std::chrono::seconds(1));  
-    myfile << "Writing this to a file.\n";
+    myfile << "Writing this to a file." << std::endl;
+    std::cout << myfile.good() << "  " << myfile.fail() << "  " << myfile.bad() << std::endl;
   }
 
   myfile.close();

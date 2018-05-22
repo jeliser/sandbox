@@ -1,5 +1,5 @@
 
-all: dir cmdline_args kill_thread periodic_file_writer linux_copy
+all: dir cmdline_args kill_thread periodic_file_writer linux_copy reference_change
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -26,6 +26,9 @@ periodic_file_writer:
 
 linux_copy:
 	$(CC) $(SRC_PATH)/linux_copy.cpp -o $(BIN_PATH)/linux_copy -lstdc++fs
+
+reference_change:
+	$(CC) $(SRC_PATH)/reference_change.cpp -o $(BIN_PATH)/reference_change.cpp
 
 clean:
 	rm -rf $(BIN_PATH)

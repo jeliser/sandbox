@@ -1,5 +1,5 @@
 
-all: dir cmdline_args kill_thread periodic_file_writer linux_copy reference_change
+all: dir cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -28,7 +28,13 @@ linux_copy:
 	$(CC) $(SRC_PATH)/linux_copy.cpp -o $(BIN_PATH)/linux_copy -lstdc++fs
 
 reference_change:
-	$(CC) $(SRC_PATH)/reference_change.cpp -o $(BIN_PATH)/reference_change.cpp
+	$(CC) $(SRC_PATH)/reference_change.cpp -o $(BIN_PATH)/reference_change
+
+std_function:
+	$(CC) $(SRC_PATH)/std_function.cpp -o $(BIN_PATH)/std_function
+
+fun_with_templates:
+	$(CC) $(SRC_PATH)/fun_with_templates.cpp -o $(BIN_PATH)/fun_with_templates
 
 clean:
 	rm -rf $(BIN_PATH)

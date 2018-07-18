@@ -22,15 +22,31 @@ int main(int argc, char * argv[]) {
 
   /** Let's get a valid method from the shared object */
   char* error;
-  auto methods = { "ctest1", "hello_world" };
+  auto methods = { "ctest1", "hello_world", "newInstance" };
   for(auto& method : methods) {
     auto fn = dlsym(dso, method);
     if((error = dlerror()) != NULL) { 
-       printf("Failed to find '%s' - %s\n", method, error);
-    } else {
-       auto hello = reinterpret_cast<int(*)(void)>(fn);
-       printf("Found '%s' - %d\n", method, hello());
+      printf("Failed to find '%s' - %s\n", method, error);
+      continue;
     }
+
+    printf("Found '%s'", method);
+    if(std::string("hello_world").compare(method) == 0) {
+      auto hello = reinterpret_cast<int(*)(void)>(fn);
+      printf(" - %d", hello());
+    } else if(std::string("newInstance").compare(method) == 0) {
+      char* error;
+      auto newInstance = reinterpret_cast<std::unique_ptr<HelloWorldInterface>(*)(void)>(dlsym(dso, "newInstance"));
+      if((error = dlerror()) != NULL) {
+        printf(" - FAILED -> %s", error);
+      } else {
+        printf(" - ");
+        for(auto& l : newInstance()->get_list()) {
+          printf("%s ", l.c_str());
+        }
+      }
+    }
+    printf("\n");
   }
 
   /** Close the shared object that was opened */

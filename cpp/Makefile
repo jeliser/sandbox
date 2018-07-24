@@ -40,6 +40,9 @@ dlopen_example: dir
 	$(CC) $(SRC_PATH)/dso_library_file.cpp -o $(BIN_PATH)/dso_library_file.so -shared -fPIC
 	$(CC) $(SRC_PATH)/dlopen_example.cpp -o $(BIN_PATH)/dlopen_example -ldl -rdynamic
 
+app_forking: dir
+	$(CC) $(SRC_PATH)/app_forking.cpp -o $(BIN_PATH)/app_forking
+
 clean:
 	rm -rf $(BIN_PATH)
 

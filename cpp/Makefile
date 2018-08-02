@@ -1,5 +1,5 @@
 
-all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example
+all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -42,6 +42,9 @@ dlopen_example: dir
 
 app_forking: dir
 	$(CC) $(SRC_PATH)/app_forking.cpp -o $(BIN_PATH)/app_forking
+
+thread_pids: dir
+	$(CC) $(SRC_PATH)/thread_pids.cpp -o $(BIN_PATH)/thread_pids
 
 clean:
 	rm -rf $(BIN_PATH)

@@ -23,7 +23,7 @@ dlopen_example: dir
 	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -ldl -rdynamic
 
 consume_cpu: dir
-	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -lpthread
+	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -pthread
 
 .DEFAULT: dir
 	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@

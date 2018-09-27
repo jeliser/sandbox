@@ -1,5 +1,5 @@
 # Check the CMake version
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 # Declare the project name
 project(cpp-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
@@ -7,13 +7,16 @@ project(cpp-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
 # Set the output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-Set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Define the executables
-add_executable(run_object common/application/application.cpp)
-target_link_libraries(run_object dl)
+# Create the output directories
+add_custom_target(build-time-make-directory ALL 
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/lib
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin) 
 
-# Define the shared objects
-include_directories(./)
-add_library(example SHARED applications/example/shared_object.cpp)
+# Add the common directory to the build system
+add_subdirectory(common)
+
+# Define the application directory
+add_subdirectory(applications)
 

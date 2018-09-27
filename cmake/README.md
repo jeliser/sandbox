@@ -24,5 +24,13 @@
 > cd build
 > make
 > cd bin
-> ./run_object ../lib/libexample.so
+
+[jeliser@jeliser-thinkpad-x1:~/code/github_sandbox/cmake/build/bin]  (git:master:e166b5b) 
+ > ./run_object ../lib/libexample.so
+Loading shared object: ../lib/libexample.so - SUCCESS
+Failed to find 'ctest1' - ../lib/libexample.so: undefined symbol: ctest1
+Found 'hello_world' - 12345
+Found 'newInstance' - hello world this is a list
+Closing shared object: ../lib/libexample.so - SUCCESS
+
 ```

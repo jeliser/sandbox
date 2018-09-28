@@ -8,6 +8,8 @@
 
 # Generate the Makefiles
 
+## Use the CMake commands
+
 ```bash
 # Just generate the Makefile 
 > cmake -H. -Bbuild
@@ -16,6 +18,13 @@
 > cmake -H. -Bbuild --graphviz=example
 > dot -Tpng -oexample.png example
 > eog example.png
+```
+
+## Use the simplified Makfile
+
+```bash
+> make
+> make clean
 ```
 
 # Run the executable

@@ -5,6 +5,6 @@ get_filename_component(LIB_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 # Include the top level path for #include resolution
 include_directories(${PROJECT_SOURCE_DIR})
 
-# Add the shared object using the generated directory name
+# Create the shared object using the generated directory name and the source file explicitly
 add_library(${LIB_NAME} SHARED shared_object.cpp)
 

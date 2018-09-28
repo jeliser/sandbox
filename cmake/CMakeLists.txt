@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.1.0)
 
 # Declare the project name
-project(cpp-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
+project(cpp-cmake-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
 
 # Set the output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

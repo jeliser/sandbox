@@ -1,9 +1,12 @@
+# Set the project name
+project(example_shared_object)
+
 # The shared object name will be the current working directory basename
 #   We're passing in a path and extracting the name (so it's not really a filename)
 get_filename_component(LIB_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 # Include the top level path for #include resolution
-include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR})
 
 # Get all of the source files from the current directory
 file(GLOB GLOB_SOURCE_FILES "*.cpp")

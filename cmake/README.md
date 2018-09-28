@@ -28,10 +28,10 @@
  > make
 Scanning dependencies of target build-time-make-directory
 [  0%] Built target build-time-make-directory
-Scanning dependencies of target run_object
-[ 16%] Building CXX object common/CMakeFiles/run_object.dir/application/application.cpp.o
-[ 33%] Linking CXX executable ../bin/run_object
-[ 33%] Built target run_object
+Scanning dependencies of target load_shared_object
+[ 16%] Building CXX object common/CMakeFiles/load_shared_object.dir/application/application.cpp.o
+[ 33%] Linking CXX executable ../bin/load_shared_object
+[ 33%] Built target load_shared_object
 Scanning dependencies of target example
 [ 50%] Building CXX object applications/example/CMakeFiles/example.dir/shared_object.cpp.o
 [ 66%] Linking CXX shared library ../../lib/libexample.so
@@ -45,7 +45,7 @@ Scanning dependencies of target another_example
 > cd bin
 
 [jeliser@jeliser-thinkpad-x1:~/code/github_sandbox/cmake/build/bin]  (git:master:e166b5b) 
- > ./run_object ../lib/libexample.so
+ > ./load_shared_object ../lib/libexample.so
 Loading shared object: ../lib/libexample.so - SUCCESS
 Failed to find 'ctest1' - ../lib/libexample.so: undefined symbol: ctest1
 Found 'hello_world' - 12345
@@ -53,7 +53,7 @@ Found 'newInstance' - hello world this is a list
 Closing shared object: ../lib/libexample.so - SUCCESS
 
 [jeliser@jeliser-thinkpad-x1:~/code/github_sandbox/cmake/build/bin]  (git:master:0e61139) 
- > ./run_object ../lib/libanother_example.so
+ > ./load_shared_object ../lib/libanother_example.so
 Loading shared object: ../lib/libanother_example.so - SUCCESS
 Failed to find 'ctest1' - ../lib/libanother_example.so: undefined symbol: ctest1
 Found 'hello_world' - 12345
@@ -61,11 +61,11 @@ Found 'newInstance' - hello world this is a list
 Closing shared object: ../lib/libanother_example.so - SUCCESS
 
 [jeliser@jeliser-thinkpad-x1:~/code/github_sandbox/cmake/build/bin]  (git:master:0e61139) 
- > ./run_object
-Usage: ./run_object [shared_object_to_load]
+ > ./load_shared_object
+Usage: ./load_shared_object [shared_object_to_load]
 
 [jeliser@jeliser-thinkpad-x1:~/code/github_sandbox/cmake/build/bin]  (git:master:0e61139) 
- > ./run_object made_up_lib
+ > ./load_shared_object made_up_lib
 Loading shared object: made_up_lib - FAILED (made_up_lib: cannot open shared object file: No such file or directory)
 
 ```

@@ -17,6 +17,9 @@ add_custom_target(build-time-make-directory ALL
 # Add the common directory to the build system
 add_subdirectory(common)
 
-# Define the application directory
+# Add the applications directory to the build system
 add_subdirectory(applications)
+
+# Add the test directory to the build system
+add_subdirectory(test)
 

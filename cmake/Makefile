@@ -12,3 +12,8 @@ clean::
 	# Run clean from the generated Makefiles.
 	cd build && make clean
 
+clang-format::
+	@echo "Formatting the source code"
+	@find ./applications -iname *.h -o -iname *.cpp | xargs clang-format -i 
+	@find ./common -iname *.h -o -iname *.cpp | xargs clang-format -i 
+	@find ./test -iname *.h -o -iname *.cpp | xargs clang-format -i 

@@ -5,6 +5,5 @@ void HelloWorld::print() {
 }
 
 std::list<std::string> HelloWorld::get_list() {
-  return std::list<std::string>( {"hello", "world", "this", "is", "a", "list"} );
+  return std::list<std::string>({"hello", "world", "this", "is", "a", "list"});
 }
-

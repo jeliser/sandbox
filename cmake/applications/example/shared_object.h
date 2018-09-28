@@ -7,14 +7,12 @@ extern "C" {
 
 int hello_world();
 
-class HelloWorld : public HelloWorldInterface
-{
-  public:
-    void print();
-    std::list<std::string> get_list();
+class HelloWorld : public HelloWorldInterface {
+ public:
+  void print();
+  std::list<std::string> get_list();
 };
 
 #ifdef __cplusplus
 }
 #endif
-

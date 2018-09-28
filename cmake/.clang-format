@@ -1,0 +1,15 @@
+---
+# We'll use defaults from the Google
+BasedOnStyle: Google
+ColumnLimit: 120
+---
+Language: Cpp
+# Force pointers to the type for C++.
+DerivePointerAlignment: false
+PointerAlignment: Left
+SpaceBeforeParens: Never
+AllowShortFunctionsOnASingleLine: None 
+
+#BraceWrapping:
+#  AfterFunction: true
+--- 

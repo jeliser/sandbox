@@ -5,12 +5,16 @@
 # This is not intended to replace using the real CMakes, but make the typical case easier to run.
 
 all::
-	# Generate the Makefiles from the current source tree using CMake
-	cmake -H. -Bbuild && cd build && make
+	# Generate the Makefiles from the current source tree using Wrapping
+	cmake -H. -Bbuild -DENABLE_TESTS=OFF && cmake --build build -- -j 8
+
+test::
+	# Generate the Makefiles from the current source tree using Wrapping
+	cmake -H. -Bbuild -DENABLE_TESTS=ON && cmake --build build -- -j 8
 
 clean::
 	# Run clean from the generated Makefiles.
-	cd build && make clean
+	cmake --build build --target clean
 
 clang-format::
 	@echo "Formatting the source code"

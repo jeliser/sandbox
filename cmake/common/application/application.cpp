@@ -43,6 +43,8 @@ int main(int argc, char* argv[]) {
         for(auto& l : newInstance()->get_list()) {
           printf("%s ", l.c_str());
         }
+        printf("    ---    ");
+        newInstance()->print();
       }
     }
     printf("\n");

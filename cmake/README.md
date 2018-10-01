@@ -1,7 +1,7 @@
 # Install CMake
 
 ```bash
-> sudo apt-get install cmake
+> sudo apt-get install cmake doxygen
 # If you care about the GraphViz output
 > sudo apt-get install graphviz
 ```

@@ -35,9 +35,14 @@ all::
 	cmake -H. -B${BUILD_DIR} -DCMAKE_TOOLCHAIN_FILE=toolchain/${OS}-${ARCH}.cmake -DENABLE_TESTS=OFF && cmake --build ${BUILD_DIR} -- -j ${CORES}
 
 ## The test target
-test::
+tests::
 	# Generate the Makefiles from the current source tree using Wrapping
 	cmake -H. -B${BUILD_DIR} -DENABLE_TESTS=ON && cmake --build ${BUILD_DIR} -- -j ${CORES}
+
+## The documentation target
+docs::
+	# Generate the Makefiles from the current source tree using Wrapping
+	cmake -H. -B${BUILD_DIR} -DBUILD_DOCS=ON && cmake --build ${BUILD_DIR} -- -j ${CORES}
 
 ## The clean targets
 clean::

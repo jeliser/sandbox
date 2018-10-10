@@ -1,0 +1,89 @@
+syntax = "proto2";
+
+package WITS0.protobuf;
+
+// Load the description from the file
+message Record01 {
+
+    // Well Identifier
+    required string wellid = 1; // ICD datatype 'string'
+    // Sidetrack/Hole Sect No.
+    required int32 stknum = 2; // ICD datatype 'int16'
+    // Record Identifier
+    required int32 recid = 3; // ICD datatype 'int16'
+    // Sequence Identifier
+    required int32 seqid = 4; // ICD datatype 'int32'
+    // Date
+    required int32 date = 5; // ICD datatype 'int32'
+    // Time
+    required int32 time = 6; // ICD datatype 'int32'
+    // Activity Code
+    required int32 actcod = 7; // ICD datatype 'int16'
+    // Depth Bit  (meas)
+    required float deptbitm = 8; // ICD datatype 'float'
+    // Depth Bit  (vert)
+    required float deptbitv = 9; // ICD datatype 'float'
+    // Depth Hole (meas)
+    required float deptmeas = 10; // ICD datatype 'float'
+    // Depth Hole (vert)
+    required float deptvert = 11; // ICD datatype 'float'
+    // Block Position
+    required float blkpos = 12; // ICD datatype 'float'
+    // Rate of Penetration (avg)
+    required float ropa = 13; // ICD datatype 'float'
+    // Hookload (avg)
+    required float hkla = 14; // ICD datatype 'float'
+    // Hookload (max)
+    required float hklx = 15; // ICD datatype 'float'
+    // Weight-on-Bit (surf,avg)
+    required float woba = 16; // ICD datatype 'float'
+    // Weight-on-Bit (surf,max)
+    required float wobx = 17; // ICD datatype 'float'
+    // Rotary Torque (surf,avg)
+    required float torqa = 18; // ICD datatype 'float'
+    // Rotary Torque (surf,max)
+    required float torqx = 19; // ICD datatype 'float'
+    // Rotary Speed  (surf,avg)
+    required int32 rpma = 20; // ICD datatype 'int16'
+    // Standpipe Pressure (avg)
+    required float sppa = 21; // ICD datatype 'float'
+    // Casing (Choke) Pressure
+    required float chkp = 22; // ICD datatype 'float'
+    // Pump Stroke Rate #1
+    required int32 spm1 = 23; // ICD datatype 'int16'
+    // Pump Stroke Rate #2
+    required int32 spm2 = 24; // ICD datatype 'int16'
+    // Pump Stroke Rate #3
+    required int32 spm3 = 25; // ICD datatype 'int16'
+    // Tank Volume (active)
+    required float tvolact = 26; // ICD datatype 'float'
+    // Tank Volume Change (act)
+    required float tvolcact = 27; // ICD datatype 'float'
+    // Mud Flow Out %
+    required int32 mfop = 28; // ICD datatype 'int16'
+    // Mud Flow Out (avg)
+    required float mfoa = 29; // ICD datatype 'float'
+    // Mud Flow In  (avg)
+    required float mfia = 30; // ICD datatype 'float'
+    // Mud Density Out (avg)
+    required float mdoa = 31; // ICD datatype 'float'
+    // Mud Density In  (avg)
+    required float mdia = 32; // ICD datatype 'float'
+    // Mud Temperature Out (avg)
+    required float mtoa = 33; // ICD datatype 'float'
+    // Mud Temperature In  (avg)
+    required float mtia = 34; // ICD datatype 'float'
+    // Mud Conductivity Out (avg)
+    required float mcoa = 35; // ICD datatype 'float'
+    // Mud Conductivity In  (avg)
+    required float mcia = 36; // ICD datatype 'float'
+    // Pump Stroke Count (cum)
+    required int32 stkc = 37; // ICD datatype 'int32'
+    // Lag Strokes
+    required int32 lagstks = 38; // ICD datatype 'int16'
+    // Depth Returns (meas)
+    required float deptretm = 39; // ICD datatype 'float'
+    // Gas (avg)
+    required float gasa = 40; // ICD datatype 'float'
+
+}

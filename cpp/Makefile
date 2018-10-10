@@ -25,6 +25,11 @@ dlopen_example: dir
 consume_cpu: dir
 	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -pthread
 
+proto:
+	protoc src/Record01.proto --cpp_out ./
+	# -lpthread needs to be included with the latest libprotobuf some reason
+	$(CC) -I./ $(SRC_PATH)/Record01.pb.cc $(SRC_PATH)/proto_example.cpp -o $(BIN_PATH)/$@ -lprotobuf -lpthread
+
 .DEFAULT: dir
 	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@
 

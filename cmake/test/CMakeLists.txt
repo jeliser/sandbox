@@ -7,4 +7,5 @@ file(GLOB_RECURSE UNIT_TEST_SOURCE_FILES *.cpp)
 # Create the unit test executable
 add_executable(run_tests ${UNIT_TEST_SOURCE_FILES})
 # Add the unit test libraries
-target_link_libraries(run_tests libgtest)
+add_dependencies(run_tests gtest)
+target_link_libraries(run_tests "${binary_dir}/lib/libgtest.a" pthread)

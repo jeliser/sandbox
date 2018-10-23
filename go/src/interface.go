@@ -4,7 +4,7 @@
 package main
 
 import (
-	"fmt"
+  "fmt"
   "reflect"
 )
 
@@ -20,7 +20,7 @@ type Organism interface {
 // class Animal - parent interface
 type Animal interface {
   Organism
-	Speak() string
+  Speak() string
   // Uncomment to get compilation failure
   //Weight() int32
 }
@@ -34,21 +34,21 @@ type Dog struct {
 
 // implement parent Organism methods
 func (d Dog) IsLiving() bool {
-	return true
+  return true
 }
 
 // implement parent Animal methods
 func (d Dog) Speak() string {
-	return d.sound
+  return d.sound
 }
 
 func (d Dog) ToString() string {
-	return fmt.Sprintf("%v %v %v", d.sound, d.age, d.IsLiving())
+  return fmt.Sprintf("%v %v %v", d.sound, d.age, d.IsLiving())
 }
 
 // additional methods
 func (d Dog) Age() int32 {
-	return d.age
+  return d.age
 }
 
 // Default constructor
@@ -67,16 +67,16 @@ type Cat struct {
 
 // implement parent Organism methods
 func (c Cat) IsLiving() bool {
-	return false
+  return false
 }
 
 // implement parent Animal methods
 func (c Cat) Speak() string {
-	return c.sound
+  return c.sound
 }
 
 func (d Cat) ToString() string {
-	return fmt.Sprintf("%v", d.sound)
+  return fmt.Sprintf("%v", d.sound)
 }
 
 // Default constructor
@@ -95,21 +95,21 @@ type Llama struct {
 
 // implement parent Organism methods
 func (l Llama) IsLiving() bool {
-	return true
+  return true
 }
 
 // implement parent Animal methods
 func (l Llama) Speak() string {
-	return l.sound
+  return l.sound
 }
 
 func (d Llama) ToString() string {
-	return fmt.Sprintf("%v %v", d.sound, d.height)
+  return fmt.Sprintf("%v %v", d.sound, d.height)
 }
 
 // additional methods
 func (d Llama) Height() int32 {
-	return d.height
+  return d.height
 }
 
 // Default constructor
@@ -124,17 +124,17 @@ func NewLlama() Llama {
 // main
 func main() {
   // Create objects that are the implementation classes
-	organisms := []Organism{ NewDog(), NewCat(), NewLlama() }
+  organisms := []Organism{ NewDog(), NewCat(), NewLlama() }
 
   // Iterate over the object list as the parent interface class
-	for _, organism := range organisms {
+  for _, organism := range organisms {
 
     // Just use the parent interface methods
-		fmt.Print(fmt.Sprintf("%v  %v -- ", reflect.TypeOf(organism).String(), organism.IsLiving())) // method dispatch via jmp-table
-		fmt.Print(organism.ToString() + "  --  ") // method dispatch via jmp-table
+    fmt.Print(fmt.Sprintf("%v  %v -- ", reflect.TypeOf(organism).String(), organism.IsLiving())) // method dispatch via jmp-table
+    fmt.Print(organism.ToString() + "  --  ") // method dispatch via jmp-table
 
-		// Cast it to an instance of the implementation interface
-		animal := organism.(Animal)
-		fmt.Println(reflect.TypeOf(animal).String() + "  " + animal.Speak()) // method dispatch via jmp-table
-	}
+    // Cast it to an instance of the implementation interface
+    animal := organism.(Animal)
+    fmt.Println(reflect.TypeOf(animal).String() + "  " + animal.Speak()) // method dispatch via jmp-table
+  }
 }

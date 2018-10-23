@@ -1,5 +1,5 @@
 
-all: interface shapes
+all: interface shapes messages
 
 SRC_PATH=./src
 BIN_PATH=./bin

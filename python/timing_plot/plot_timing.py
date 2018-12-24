@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import struct
 import matplotlib.pyplot as plot
+import numpy as np
 
 entries = dict()
 
@@ -31,7 +32,8 @@ for entry, rows in entries.items():
     (y, x) = zip(*rows)
     # Convert to seconds, and plot the step function
     p[i].step([(v - xmin) * 1.0E-9 for v in x], y)
-    plot.yticks([1, 2], ('Stop', 'Start'))
+    plot.yticks([1, 2], ('Start', 'Stop'))
+    plot.ylim((0, 3))
     i += 1
 
 plot.show()

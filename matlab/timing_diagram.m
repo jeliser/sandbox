@@ -1,7 +1,7 @@
 clear all;
 close all;
 format long;
-filename = 'sample_long.raw';
+filename = 'sample_short.raw';
 fd = fopen(filename);
 
 entities = [];

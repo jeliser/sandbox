@@ -67,5 +67,13 @@ int main(int argc, char * argv[]) {
     printf("%s\n", obj->print().c_str());
   }
 
+  const char* char1 = "Hello";
+  const char* char2 = "Hello";
+  if(char1 == char2) {
+    printf("char1 == char2\n");
+  } else {
+    printf("char1 != char2\n");
+  }
+
   return 0;
 }

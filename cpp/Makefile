@@ -4,7 +4,8 @@ all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change s
 SRC_PATH=./src
 BIN_PATH=./bin
 #CC=g++ -std=c++11  # C++11
-CC=g++ -std=c++1z  # C++17
+CC=g++ -std=c++14  # C++14
+#CC=g++ -std=c++1z  # C++17
 #CC=arm-linux-gnueabi-g++ -std=c++1z  # C++17
 #CC=/opt/Xilinx/SDK/2017.2/gnu/aarch32/lin/gcc-arm-linux-gnueabi/bin/arm-linux-gnueabihf-g++ -std=c++1z  # C++17
 

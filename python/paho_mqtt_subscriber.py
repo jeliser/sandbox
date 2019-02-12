@@ -36,9 +36,8 @@ client.loop_start()        #start the loop
  
 while Connected != True:    #Wait for connection
     time.sleep(0.1)
- 
-client.subscribe("co2/content")
-client.subscribe("ac/temperature")
+## The '#' will subscribe to all topics on the bus
+client.subscribe("#")
  
 try:
     while True:

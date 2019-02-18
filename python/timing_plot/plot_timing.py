@@ -9,7 +9,7 @@ xmin = 999999999999999999999
 xmax = 0
 
 # Read in all the data from the sample file
-with open('./sample.raw', 'rb') as f:
+with open('./event_based_timing.raw', 'rb') as f:
     while True:
         raw = f.read(14)
         if len(raw) != 14:

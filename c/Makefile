@@ -1,5 +1,5 @@
 
-all: dir hello_world inotify filesize_total mosquitto
+all: dir hello_world inotify filesize_total mosquitto azure_event_hub
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -7,6 +7,9 @@ CC=gcc
 
 dir:
 	mkdir -p $(BIN_PATH)
+
+azure_event_hub: dir
+	$(CC) $(SRC_PATH)/$@.c -o $(BIN_PATH)/$@ -lqpid-proton
 
 mosquitto: dir
 	$(CC) $(SRC_PATH)/$@.c -o $(BIN_PATH)/$@ -lmosquitto

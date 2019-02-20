@@ -4,7 +4,7 @@
 void my_message_callback(struct mosquitto *mosq, void *userdata, const struct mosquitto_message *message)
 {
 	if(message->payloadlen){
-		printf("%s %s\n", message->topic, message->payload);
+		printf("%s %s\n", message->topic, (char*)message->payload);
 	}else{
 		printf("%s (null)\n", message->topic);
 	}

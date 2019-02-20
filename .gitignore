@@ -2,4 +2,5 @@ bin/
 *.swp
 *.pyc
 *.so
+*.gc*
 demo.docx

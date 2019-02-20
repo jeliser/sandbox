@@ -1,5 +1,5 @@
 
-all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer
+all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -11,6 +11,9 @@ CC=g++ -std=c++14  # C++14
 
 dir:
 	mkdir -p $(BIN_PATH)
+
+code_coverage: dir
+	$(CC) $(SRC_PATH)/pointers.cpp -o $(BIN_PATH)/code_coverage -fprofile-arcs -ftest-coverage
 
 log4cxx: dir
 	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -llog4cxx -lapr-1 -laprutil-1

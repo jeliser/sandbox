@@ -36,7 +36,8 @@ void die(const char *file, int line, const char *message)
 }
 
 int sendMessage(pn_messenger_t * messenger) {
-    char * address = (char *) "amqps://{SAS Key Name}:{SAS key}@{namespace name}.servicebus.windows.net/{event hub name}";
+    //char * address = (char *) "amqps://{SAS Key Name}:{SAS key}@{namespace name}.servicebus.windows.net/{event hub name}";
+    char * address = (char *) "amqps://publisher:vtJwe9BVGMY7qunt+hhbCHGKlG+zFl8HIdavSS0yTeE@kelvin-flight.servicebus.windows.net/example";
     char * msgtext = (char *) "Hello from C!";
 
     pn_message_t * message;

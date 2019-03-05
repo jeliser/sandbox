@@ -1,0 +1,4 @@
+// Use the Google seed as the C++ seed (allows for reproducing results)
+// This has always been such a pain in the ass to find
+srand(::testing::UnitTest::GetInstance()->random_seed());
+

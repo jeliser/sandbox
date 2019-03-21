@@ -58,6 +58,7 @@ plot.subplots_adjust(bottom=0.3)
 plot.xlabel('Data Model Object Name')
 plot.ylabel('Elapsed Time (nsec)')
 plot.title('Testing Data Model Object Lifecycle - C++\n(instantiate, populate, serialize, and deserialize)\n%d iterations on a %s\n' % (len(results[0]['values']), run_cmd('uname -rsp')))
+#plot.title('Testing Data Model Object Lifecycle - C++\n(instantiate, populate, serialize, and deserialize)\n%d iterations on a %s\n' % (len(results[0]['values']), 'Thomson imx6'))
 
 '''
 ## Build a line graph

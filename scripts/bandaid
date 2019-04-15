@@ -1,0 +1,51 @@
+#!/bin/bash
+
+let max_fails=4
+let fails=0
+period="1"
+logfile="/tmp/openvpn-restart.log"
+
+pingout() {
+    ping -c4 google.com >/dev/null 2>&1
+    rc=$?
+    return $rc
+}
+
+restart_openvpn() {
+    touch $logfile
+    echo "restarting openvpn at $(date)" >> $logfile
+    systemctl restart openvpn
+    sleep 1
+}
+
+run_loop() {
+    while :; do
+        pingout
+        if [ $? -eq 0 ]; then
+            let fails=0
+            echo "good"
+        else
+            let fails++
+            echo "bad"
+        fi
+
+        if [ $fails -gt $max_fails ]; then
+            restart_openvpn
+            let fails=0
+        fi
+        sleep $period
+    done
+}
+
+run_oneshot() {
+    pingout || restart_openvpn
+}
+
+if [ "x$1" == "xloop" ]; then
+    run_loop
+else
+    run_oneshot
+fi
+
+exit $?
+

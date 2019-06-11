@@ -1,5 +1,5 @@
 
-all: interface shapes messages
+all: interface shapes messages gcp_hello_world
 
 SRC_PATH=./src
 BIN_PATH=./bin

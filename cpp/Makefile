@@ -1,5 +1,5 @@
 
-all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision
+all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -27,7 +27,15 @@ dlopen_example: dir
 	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -ldl -rdynamic
 
 consume_cpu: dir
-	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -pthread
+	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -lpthread
+
+# sudo apt install libwebsockets-dev 
+ws_server: dir
+	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -lpthread -lwebsockets -Wno-deprecated-declarations
+
+# sudo apt install libwebsockets-dev 
+ws_client: dir
+	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -lpthread -lwebsockets -Wno-deprecated-declarations -Wno-write-strings
 
 proto:
 	protoc src/Record01.proto --cpp_out ./

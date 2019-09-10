@@ -1,0 +1,3 @@
+*.o
+call_class
+call_function

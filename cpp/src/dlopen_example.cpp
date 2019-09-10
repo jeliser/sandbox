@@ -4,8 +4,7 @@
 
 #include "dso_library_file.h"
 
-int main(int argc, char * argv[]) {
-
+int main(int argc, char* argv[]) {
   /** Validate inputs */
   if(argc != 2) {
     printf("Usage: %s [shared_object_to_load]\n", argv[0]);
@@ -22,21 +21,21 @@ int main(int argc, char * argv[]) {
 
   /** Let's get a valid method from the shared object */
   char* error;
-  auto methods = { "ctest1", "hello_world", "newInstance" };
+  auto methods = {"ctest1", "hello_world", "newInstance"};
   for(auto& method : methods) {
     auto fn = dlsym(dso, method);
-    if((error = dlerror()) != NULL) { 
+    if((error = dlerror()) != NULL) {
       printf("Failed to find '%s' - %s\n", method, error);
       continue;
     }
 
     printf("Found '%s'", method);
     if(std::string("hello_world").compare(method) == 0) {
-      auto hello = reinterpret_cast<int(*)(void)>(fn);
+      auto hello = reinterpret_cast<int (*)(void)>(fn);
       printf(" - %d", hello());
     } else if(std::string("newInstance").compare(method) == 0) {
       char* error;
-      auto newInstance = reinterpret_cast<std::unique_ptr<HelloWorldInterface>(*)(void)>(dlsym(dso, "newInstance"));
+      auto newInstance = reinterpret_cast<std::unique_ptr<HelloWorldInterface> (*)(void)>(dlsym(dso, "newInstance"));
       if((error = dlerror()) != NULL) {
         printf(" - FAILED -> %s", error);
       } else {

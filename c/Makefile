@@ -29,3 +29,8 @@ ws_client: dir
 clean:
 	rm -rf $(BIN_PATH)
 
+CODE_FORMAT_FILES=-iname "*.h" -o -iname "*.hpp" -o -iname "*.cpp" -o -iname "*.icc" -o -iname "*.c"
+
+format::
+	@echo "Formatting the source code"
+	@find . ${CODE_FORMAT_FILES} | xargs clang-format -style=file -i -sort-includes=false

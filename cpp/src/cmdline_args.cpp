@@ -13,7 +13,7 @@
 
 using namespace std;
 
-static void show_usage(char * prog) {
+static void show_usage(char* prog) {
   cerr << "Usage: " << prog << " <option(s)>\n"
        << "Options:\n"
        << "\t-P,--pid PROCESS_PID\tSpecify the process's PID\n"
@@ -23,43 +23,39 @@ static void show_usage(char * prog) {
        << "\t-h,--help\t\tShow this help message\n\n";
 }
 
-
-int main(int argc, char * argv[]) {
-
+int main(int argc, char* argv[]) {
   string pName = "";
   int pid = -1;
-  string tName  = "";
+  string tName = "";
   int tid = -1;
 
   int verbose = 0;
 
   if(argc == 1) {
     show_usage(argv[0]);
-    return(-1);
+    return (-1);
   }
 
-
-  static struct option long_options[] =
-    {
+  static struct option long_options[] = {
       /* These options set a flag. */
-      {"verbose", no_argument,       &verbose, 1},
-      {"brief",   no_argument,       &verbose, 0},
+      {"verbose", no_argument, &verbose, 1},
+      {"brief", no_argument, &verbose, 0},
       /* These options don’t set a flag.
          We distinguish them by their indices. */
-      {"help",    no_argument,       0, 'h'},
-      {"pid",     required_argument, 0, 'P'},
-      {"pname",   required_argument, 0, 'N'},
-      {"tid",     required_argument, 0, 't'},
-      {"tname",   required_argument, 0, 'n'},
-    };
-/*
-           struct option {
-               const char *name;
-               int         has_arg;
-               int        *flag;
-               int         val;
-           };
-*/
+      {"help", no_argument, 0, 'h'},
+      {"pid", required_argument, 0, 'P'},
+      {"pname", required_argument, 0, 'N'},
+      {"tid", required_argument, 0, 't'},
+      {"tname", required_argument, 0, 'n'},
+  };
+  /*
+             struct option {
+                 const char *name;
+                 int         has_arg;
+                 int        *flag;
+                 int         val;
+             };
+  */
   /* getopt_long stores the option index here. */
   int option_list_size = sizeof(long_options) / sizeof(struct option);
   cout << option_list_size << endl;
@@ -67,11 +63,11 @@ int main(int argc, char * argv[]) {
 
   int c = 0;
   char arg_list[] = "ht:n:P:N:";
-  while((c = getopt_long (argc, argv, arg_list, long_options, &option_index)) != -1) {
-    switch (c) {
+  while((c = getopt_long(argc, argv, arg_list, long_options, &option_index)) != -1) {
+    switch(c) {
       case 'h': {
         show_usage(argv[0]);
-      };  break;
+      }; break;
       case 'N': {
         pName = optarg;
       }; break;
@@ -87,24 +83,20 @@ int main(int argc, char * argv[]) {
       case '?': {
         bool req_arg = false;
         for(int j = 1; j < sizeof(arg_list); j++) {
-          if((arg_list[j] == ':') && (arg_list[j-1] == optopt)) {
+          if((arg_list[j] == ':') && (arg_list[j - 1] == optopt)) {
             req_arg = true;
           }
         }
         if(req_arg) {
           fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-        }
-        else if(isprint (optopt)) {
+        } else if(isprint(optopt)) {
           fprintf(stderr, "Unknown option '-%c`.\n", optopt);
-        }
-        else {
+        } else {
           fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
         }
-        return(-1);
+        return (-1);
       }; break;
-      default: {
-        printf("ERR:  Unhandled option\n");
-      }; break;
+      default: { printf("ERR:  Unhandled option\n"); }; break;
     }
   }
 
@@ -113,5 +105,5 @@ int main(int argc, char * argv[]) {
   cout << tName << endl;
   cout << tid << endl;
 
-  return(0);
+  return (0);
 }

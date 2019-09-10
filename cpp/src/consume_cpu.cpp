@@ -13,13 +13,12 @@ volatile std::atomic<bool> consume;
 std::mutex mutex;
 std::condition_variable cv;
 
-void consumer() 
-{
+void consumer() {
   while(running) {
     {
       std::unique_lock<std::mutex> lock(mutex);
       while(!consume) {
-          cv.wait(lock);
+        cv.wait(lock);
       }
     }
     while(consume) {
@@ -28,13 +27,11 @@ void consumer()
   }
 }
 
-void term(int signum)
-{
+void term(int signum) {
   running = false;
 }
 
-int main(int argc, char** argv) 
-{
+int main(int argc, char** argv) {
   /** Attach the signal handler */
   struct sigaction action;
   memset(&action, 0, sizeof(struct sigaction));
@@ -57,15 +54,14 @@ int main(int argc, char** argv)
   std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
   // Start the consumer
-  while(running)
-  {
+  while(running) {
     {
       std::unique_lock<std::mutex> lock(mutex);
       consume = true;
       cv.notify_all();
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<uint32_t>(total_msec * cpu_percentage)));
- 
+
     // Stop the consumer
     {
       std::unique_lock<std::mutex> lock(mutex);

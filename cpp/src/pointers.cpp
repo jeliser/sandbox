@@ -4,41 +4,51 @@
 #include <list>
 
 class Interface {
-public:
-  virtual ~Interface() {};
+ public:
+  virtual ~Interface(){};
   virtual std::string print() = 0;
   virtual std::unique_ptr<Interface> clone() = 0;
 };
 
 class ImplA : public Interface {
-public:
+ public:
   ImplA() = default;
- ~ImplA() {};
+  ~ImplA(){};
 
-public:
-  std::string print() { return "hello"; };
-  static std::unique_ptr<Interface> newInstance() { return std::make_unique<ImplA>(); };
-  std::unique_ptr<Interface> clone() { return std::make_unique<ImplA>(*this); }
+ public:
+  std::string print() {
+    return "hello";
+  };
+  static std::unique_ptr<Interface> newInstance() {
+    return std::make_unique<ImplA>();
+  };
+  std::unique_ptr<Interface> clone() {
+    return std::make_unique<ImplA>(*this);
+  }
 };
 
 class ImplB : public Interface {
-public:
+ public:
   ImplB() = default;
- ~ImplB() {};
+  ~ImplB(){};
 
-public:
-  std::string print() { return "world"; };
-  static std::unique_ptr<Interface> newInstance() { return std::make_unique<ImplB>(); };
-  std::unique_ptr<Interface> clone() { return std::make_unique<ImplB>(*this); }
+ public:
+  std::string print() {
+    return "world";
+  };
+  static std::unique_ptr<Interface> newInstance() {
+    return std::make_unique<ImplB>();
+  };
+  std::unique_ptr<Interface> clone() {
+    return std::make_unique<ImplB>(*this);
+  }
 };
 
-int main(int argc, char * argv[]) {
-
+int main(int argc, char* argv[]) {
   auto tmp = std::make_unique<int>();
   *tmp = 123;
   auto tmp2 = std::make_shared<int>(*tmp);
   printf("%d  %d\n", *tmp, *tmp2);
-
 
   // Create a bunch of unique pointers
   std::list<std::unique_ptr<Interface>> unique_objs;

@@ -1,7 +1,6 @@
 #include "dso_library_file.h"
 
-int hello_world()
-{
+int hello_world() {
   return 12345;
 }
 
@@ -10,7 +9,7 @@ void HelloWorld::print() {
 }
 
 std::list<std::string> HelloWorld::get_list() {
-  return std::list<std::string>( {"hello", "world", "this", "is", "a", "list"} );
+  return std::list<std::string>({"hello", "world", "this", "is", "a", "list"});
 }
 
 // This function is forcing all the methods in the Interface to be implemented.

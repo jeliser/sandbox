@@ -5,7 +5,6 @@
 #include <functional>
 
 int main() {
-
   uint32_t valA = 123;
   uint32_t valB = 987;
   auto ref = std::ref(valA);
@@ -20,6 +19,4 @@ int main() {
   //  123  456  456
   ref.get() = 456;
   std::cout << valA << "  " << valB << "  " << ref << std::endl;
-
 }
-

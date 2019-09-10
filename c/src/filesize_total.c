@@ -1,4 +1,4 @@
-/* 
+/*
    http://web.eecs.utk.edu/~plank/plank/classes/cs360/360/notes/Prsize/prsize1.c
 
    prsize1.c
@@ -12,25 +12,24 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-int main()
-{
-  DIR *d;
-  struct dirent *de;
+int main() {
+  DIR* d;
+  struct dirent* de;
   struct stat buf;
   int exists;
   int total_size;
 
   d = opendir(".");
-  if (d == NULL) {
+  if(d == NULL) {
     perror("prsize");
     exit(1);
   }
- 
+
   total_size = 0;
 
-  for (de = readdir(d); de != NULL; de = readdir(d)) {
+  for(de = readdir(d); de != NULL; de = readdir(d)) {
     exists = stat(de->d_name, &buf);
-    if (exists < 0) {
+    if(exists < 0) {
       fprintf(stderr, "Couldn't stat %s\n", de->d_name);
     } else {
       total_size += buf.st_size;

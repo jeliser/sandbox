@@ -6,30 +6,27 @@ using namespace log4cxx::xml;
 using namespace log4cxx::helpers;
 
 // Define static logger variable
-LoggerPtr loggerMyMain(Logger::getLogger( "main"));
-LoggerPtr loggerFunctionA(Logger::getLogger( "functionA"));
+LoggerPtr loggerMyMain(Logger::getLogger("main"));
+LoggerPtr loggerFunctionA(Logger::getLogger("functionA"));
 
-void functionA()
-{
-    LOG4CXX_INFO(loggerFunctionA, "Executing functionA.");
+void functionA() {
+  LOG4CXX_INFO(loggerFunctionA, "Executing functionA.");
 }
 
-int main()
-{
-    int value = 5;
+int main() {
+  int value = 5;
 
-    // Load XML configuration file using DOMConfigurator
-    DOMConfigurator::configure("Log4cxxConfig.xml");
+  // Load XML configuration file using DOMConfigurator
+  DOMConfigurator::configure("Log4cxxConfig.xml");
 
-    LOG4CXX_TRACE(loggerMyMain, "this is a debug message for detailed code discovery. Value=" << value);
-    LOG4CXX_DEBUG(loggerMyMain, "this is a debug message.");
-    LOG4CXX_INFO (loggerMyMain, "this is a info message, ignore. Value=" << value);
-    LOG4CXX_WARN (loggerMyMain, "this is a warn message, not too bad.");
-    LOG4CXX_ERROR(loggerMyMain, "this is a error message, something serious is happening.");
-    LOG4CXX_FATAL(loggerMyMain, "this is a fatal message!!!");
+  LOG4CXX_TRACE(loggerMyMain, "this is a debug message for detailed code discovery. Value=" << value);
+  LOG4CXX_DEBUG(loggerMyMain, "this is a debug message.");
+  LOG4CXX_INFO(loggerMyMain, "this is a info message, ignore. Value=" << value);
+  LOG4CXX_WARN(loggerMyMain, "this is a warn message, not too bad.");
+  LOG4CXX_ERROR(loggerMyMain, "this is a error message, something serious is happening.");
+  LOG4CXX_FATAL(loggerMyMain, "this is a fatal message!!!");
 
-    functionA();
+  functionA();
 
-    return 0;
+  return 0;
 }
-

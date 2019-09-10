@@ -5,17 +5,15 @@
 #include <functional>
 #include <map>
 
-void test(bool val)
-{
+void test(bool val) {
   printf("%d\n", val);
 }
 
 typedef struct {
-  std::function<void (bool)> callback;
+  std::function<void(bool)> callback;
 } CallbackProperties;
 
 int main() {
-
   auto func1 = std::function<void(bool)>();
 
   if(func1) {
@@ -41,4 +39,3 @@ int main() {
   found->second.callback(true);
   callbacks.clear();
 }
-

@@ -1,7 +1,6 @@
 #include <iostream>
 
-
-int main(int argc, char * argv[]) {
+int main(int argc, char* argv[]) {
   std::cout << "Why data representations matter --- 4200530431.0000" << std::endl;
 
   // x86_64

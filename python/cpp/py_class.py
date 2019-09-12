@@ -1,5 +1,7 @@
 '''py_class.py - Python source designed to demonstrate the use of python embedding'''
 import abc
+import pyaml
+import asyncio
 
 class MultiplyInterface(abc.ABC):
     @abc.abstractmethod

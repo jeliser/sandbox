@@ -25,7 +25,7 @@
 
 static constexpr int STDOUT = 0;
 
-int main(int argc, char* argv[]) {
+int run_me(int argc, char* argv[]) {
   PyObject *pName, *pModule, *pDict, *pClass, *pInstance, *pValue;
   int i, arg[8];
 

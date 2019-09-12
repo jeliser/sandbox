@@ -1,3 +1,4 @@
 *.o
 call_class
 call_function
+run_me

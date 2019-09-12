@@ -20,9 +20,27 @@
 //  ModuleNotFoundError: No module named 'py_class'
 //
 
-extern int run_me(int argc, char* argv[]);
-
+#include <iostream>
+#include <dlfcn.h>
 
 int main(int argc, char* argv[]) {
-  return run_me(argc, argv);
+
+  auto dso = dlopen("./libcall_class.so", RTLD_NOW | RTLD_GLOBAL);
+  if(dso == nullptr) {
+    std::cout << dlerror() << std::endl;
+    return -1;
+  }
+
+  char* error;
+  std::string method = "run_me";
+  dlsym(dso, method.c_str());
+  if((error = dlerror()) != NULL) {
+    std::cout << "Failed to find '" << method << "' - " << error << std::endl;
+    return -1;
+  }
+
+  auto callback = reinterpret_cast<int (*)(int, char**)>(dlsym(dso, method.c_str()));
+  callback(argc, argv);
+
+  return 0;
 }

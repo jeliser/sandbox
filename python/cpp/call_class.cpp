@@ -25,6 +25,8 @@
 
 static constexpr int STDOUT = 0;
 
+extern "C" {
+
 int run_me(int argc, char* argv[]) {
   PyObject *pName, *pModule, *pDict, *pClass, *pInstance, *pValue;
   int i, arg[8];
@@ -83,4 +85,6 @@ int run_me(int argc, char* argv[]) {
   Py_Finalize();
 
   return 0;
+}
+
 }

@@ -1,16 +1,29 @@
 // A sample of python embedding (calling python classes from within C++ code)
 //
-// To run:
-// 1) setenv PYTHONPATH ${PYTHONPATH}:./
-// 2) call_class py_source Multiply multiply
-// 3) call_class py_source Multiply multiply 9 8
-//
 //  > PYTHONPATH=$( pwd ) ./call_class py_class Multiply multiply
+//  Attempting to load python module: py_class
 //  The result of 6 x 5 : 30
 //  Return of call : 30
 //
+//  > PYTHONPATH=$( pwd ) ./call_class py_class Multiply multiply2 4 4
+//  Attempting to load python module: py_class
+//  The result of 4 x 4 : 16
+//  Return of call : 16
+//
+// ------------------------------
+//  Off-nominal
+// ------------------------------
+//
+//  > ./call_class py_class Multiply2 multiply2 4 4
+//  Attempting to load python module: py_class
+//  Original exception was:
+//  ModuleNotFoundError: No module named 'py_class'
+//
 
 #include <Python.h>
+#include <iostream>
+
+static constexpr int STDOUT = 0;
 
 int main(int argc, char* argv[]) {
   PyObject *pName, *pModule, *pDict, *pClass, *pInstance, *pValue;
@@ -23,16 +36,26 @@ int main(int argc, char* argv[]) {
 
   Py_Initialize();
   pName = PyUnicode_FromString(argv[1]);
-  pModule = PyImport_Import(pName);
+
+  // Load the module object
+  std::cout << "Attempting to load python module: " << PyUnicode_AsUTF8(pName) << std::endl;
+  if((pModule = PyImport_Import(pName)) == nullptr) {
+    PyErr_PrintEx(STDOUT);
+    return -1;
+  }
+
   pDict = PyModule_GetDict(pModule);
 
   // Build the name of a callable class
-  pClass = PyDict_GetItemString(pDict, argv[2]);
+  std::cout << "Attempting to access python class: " << argv[2] << std::endl;
+  if((pClass = PyDict_GetItemString(pDict, argv[2])) == nullptr || !PyCallable_Check(pClass)) {
+    std::cout << "Unable to access python class: " << argv[2] << std::endl;
+    PyErr_PrintEx(STDOUT);
+    return -1;
+  }
 
   // Create an instance of the class
-  if(PyCallable_Check(pClass)) {
-    pInstance = PyObject_CallObject(pClass, NULL);
-  }
+  pInstance = PyObject_CallObject(pClass, NULL);
 
   // Build parameter list
   if(argc > 4) {

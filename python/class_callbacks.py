@@ -70,48 +70,69 @@ dd = DDouble("my_duplicate_double")
 ## All the overloaded functions
 @overload
 def callback(data: isa(MessageInterface)):
-    print('{:16} -- {}'.format('MessageInterface', data))
+    print('{:20} -- {}'.format('MessageInterface', data))
 
 @overload
 def callback(data: isa(Float)):
-    print('{:16} -- {}'.format('Float', data))
+    print('{:20} -- {}'.format('Float', data))
 
 @overload
 def callback(data: isa(Color)):
-    print('{:16} -- {}'.format('Color', data))
+    print('{:20} -- {}'.format('Color', data))
+
+@overload
+def callback(data: isa(list), buffered=True):
+    if buffered:
+        print('{:20} -- {}'.format('List', data))
+    else:
+        for d in data:
+            callback(d)
+
 
 # This will trigger the specific callbacks
-print('Non-class methods:')
+print('Non-class methods (single object):')
 callback(f)
 callback(c)
 # This will trigger the catch-all callback
 callback(d)
 callback(dd)
+print('Non-class methods (multiple objects):')
+callback([f, c, d, dd], False)
+callback([f, c, d, dd])
 print('')
 
 ###################################
 ## Example of using overloads inside of a class definition
 
-class DataScienceApplication(metaclass=multimeta):
+class DataModelApplication(metaclass=multimeta):
     def on_data(self, data: Float):
-        print('{:16} -- {}'.format('Float', data))
+        print('{:20} -- {}'.format('Float', data))
 
     def on_data(self, data: Double):
-        print('{:16} -- {}'.format('Double', data))
+        print('{:20} -- {}'.format('Double', data))
 
     def on_data(self, data: DDouble):
-        print('{:16} -- {}'.format('DDouble', data))
+        print('{:20} -- {}'.format('DDouble', data))
 
     def on_data(self, data: MessageInterface):
-        print('{:16} -- {}'.format('MessageInterface', data))
+        print('{:20} -- {}'.format('MessageInterface', data))
+
+    def on_data(self, data: list, buffered=True):
+        if buffered:
+            print('{:20} -- {}'.format('List', data))
+        else:
+            for d in data:
+                self.on_data(d)
 
 
-app = DataScienceApplication()
+app = DataModelApplication()
 
 
-print('Class methods:')
+print('Class methods (single object):')
 app.on_data(f)
 app.on_data(c)
 app.on_data(d)
 app.on_data(dd)
-
+print('Class methods (multiple objects):')
+app.on_data([f, c, d, dd], False)
+app.on_data([f, c, d, dd])

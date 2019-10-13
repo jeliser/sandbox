@@ -102,9 +102,29 @@ callback([f, c, d, dd])
 print('')
 
 ###################################
-## Example of using overloads inside of a class definition
+# References on multimeta programming ... 
+#
+# https://python-3-patterns-idioms-test.readthedocs.io/en/latest/Metaprogramming.html
+# http://code.activestate.com/recipes/204197/
+# https://stackoverflow.com/questions/31379485/1-class-inherits-2-different-metaclasses-abcmeta-and-user-defined-meta
+###################################
 
-class DataModelApplication(metaclass=multimeta):
+###################################
+## Example of using overloads inside of a class definition
+class ApplicationInterface(metaclass=multimeta):
+    # We are sacrificing the ABC metaclass in favor of the multi-method support.
+    # The write-up above should allow for multiple metaclasses, but I quick test didn't work.
+    def on_configuration(self, config) -> bool:
+        raise NotImplementedError('Must implement abstract method {}'.format(sys._getframe().f_code.co_name))
+
+    def topic(self):
+        return "topic"
+
+class DataModelApplication(ApplicationInterface):
+    #def on_configuration(self, config):
+    #    print(config)
+    #    return True
+
     def on_data(self, data: Float):
         print('{:20} -- {}'.format('Float', data))
 
@@ -114,7 +134,7 @@ class DataModelApplication(metaclass=multimeta):
     def on_data(self, data: DDouble):
         print('{:20} -- {}'.format('DDouble', data))
 
-    def on_data(self, data: MessageInterface):
+    def on_data(self, data):
         print('{:20} -- {}'.format('MessageInterface', data))
 
     def on_data(self, data: list, buffered=True):
@@ -127,7 +147,6 @@ class DataModelApplication(metaclass=multimeta):
 
 app = DataModelApplication()
 
-
 print('Class methods (single object):')
 app.on_data(f)
 app.on_data(c)
@@ -136,3 +155,4 @@ app.on_data(dd)
 print('Class methods (multiple objects):')
 app.on_data([f, c, d, dd], False)
 app.on_data([f, c, d, dd])
+

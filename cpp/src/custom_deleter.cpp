@@ -48,7 +48,6 @@ class hello_t {
   }
 };
 
-
 int main() {
   auto del1 = [](Node* p) {
     while(p) {
@@ -61,11 +60,9 @@ int main() {
   };
 
   std::unique_ptr<Node, decltype(del1)> head(createList().release(), del1);
-  auto tail = std::unique_ptr<Node, void(*)(Node*)>(createList().release(), del1);
-  std::unique_ptr<Node, void(*)(Node*)>tails = std::unique_ptr<Node, void(*)(Node*)>(createList().release(), del1);
-
+  auto tail = std::unique_ptr<Node, void (*)(Node*)>(createList().release(), del1);
+  std::unique_ptr<Node, void (*)(Node*)> tails = std::unique_ptr<Node, void (*)(Node*)>(createList().release(), del1);
 
   hello_t hello;
   hello.world = std::unique_ptr<int, std::function<void(int*)>>(new int(), [](int* tmp) { delete tmp; });
-
 }

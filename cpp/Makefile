@@ -1,11 +1,11 @@
 
-all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client custom_deleter
+all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client custom_deleter any
 
 SRC_PATH=./src
 BIN_PATH=./bin
-#CC=g++ -std=c++11  # C++11
-CC=g++ -std=c++14  # C++14
-#CC=g++ -std=c++1z  # C++17
+#CC=g++ -std=c++11 -g # C++11
+CC=g++ -std=c++14 -g # C++14
+#CC=g++ -std=c++1z -g # C++17
 #CC=arm-linux-gnueabi-g++ -std=c++1z  # C++17
 #CC=/opt/Xilinx/SDK/2017.2/gnu/aarch32/lin/gcc-arm-linux-gnueabi/bin/arm-linux-gnueabihf-g++ -std=c++1z  # C++17
 

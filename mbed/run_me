@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build -t mbed-os:latest -f mbed-os.dockerfile . && \
+docker build -t mbed-blinker:latest -f mbed-blinker.dockerfile .

@@ -2,14 +2,37 @@
 import select
 import socket
 
-source = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-source.connect(('192.168.0.43', 5555))
-print "Connecting the SOURCE on port 5555"
+help_str = """
+############
+## You can run a TCP server
+##  > nc -l 5555
+## You can also run a proxy
+##  > socat tcp-l:5555,reuseaddr,fork tcp-l:6666,reuseaddr,fork
+##
+## You can pipe data to the TCP server using this command
+##  > cat ~/downloads/usws-van.csv | nc 127.0.0.1 5555
+##  > cat ~/downloads/usws-van.csv | nc 127.0.0.1 6666
+##
+## You can connect a listener to the rebroadcaster socket
+##  > nc 127.0.0.1 7777
+############
+"""
+print(help_str)
 
+source_ip   = '192.168.0.43'
+source_port = 5555
+source_ip   = '127.0.0.1'
+source_port = 5555
+print('Attempting to establish connection to {}:{} for establishing the rebroadcast'.format(source_ip, source_port))
+source = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+source.connect((source_ip, source_port))
+
+server_ip   = ''
+server_port = 7777
+print('Rebroadcasting on port {}'.format(server_port))
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(('', 7777))
+server.bind(('', server_port))
 server.listen(20)
-print "Listening on port 7777"
 
 source_list = [server, source]
 read_list = []
@@ -19,7 +42,7 @@ while True:
         if s is server:
             client_socket, address = server.accept()
             read_list.append(client_socket)
-            print "Accepted connection from", address
+            print('Accepted connection from {}'.format(address))
         elif s is source:
             data = s.recv(1024)
             if data:
@@ -30,4 +53,4 @@ while True:
             if not data:
                 s.close()
                 read_list.remove(s)
-                print "Removed connection"
+                print('Removed connection')

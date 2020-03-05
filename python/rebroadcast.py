@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 import select
 import socket
+import argparse
+import sys
 
-help_str = """
+HELP = """
 ############
 ## First
 ##   You can run a TCP server
@@ -13,9 +15,9 @@ help_str = """
 ## Second
 ##   You can run the rebroadcaster
 ##    > ./rebroadcaster.py
-###
+##
 ## Third
-#   You can run the CSV publisher
+##   You can run the CSV publisher
 ##    > ./csv_publisher
 ##   You can pipe data to the TCP server using this command
 ##    > cat ~/downloads/usws-van.csv | nc 127.0.0.1 6666
@@ -25,22 +27,36 @@ help_str = """
 ##    > nc 127.0.0.1 7777
 ############
 """
-print(help_str)
 
-source_ip   = '192.168.0.43'
-source_port = 5555
-source_ip   = '127.0.0.1'
-source_port = 5555
-print('Attempting to establish connection to {}:{} for establishing the rebroadcast'.format(source_ip, source_port))
+SOURCE_IP   = '127.0.0.1'
+SOURCE_PORT = 5555
+SERVER_IP   = ''
+SERVER_PORT = 7777
+SIMULTANEOUS_CONNECTIONS = 20
+
+parser = argparse.ArgumentParser(description='Publishes rows of data.')
+parser.add_argument(      '--source-ip', help='The IP of the server to connect to (default: {})'.format(SOURCE_IP), default=SOURCE_IP)
+parser.add_argument(      '--source-port', help='The PORT of the server to connect to (default: {})'.format(SOURCE_PORT), default=SOURCE_PORT, type=int)
+parser.add_argument('-i', '--server-ip', help='The IP we want to rebroadcast from (default: {})'.format(SERVER_IP if SERVER_IP else 'INADDR_ANY'), default=SERVER_IP)
+parser.add_argument('-p', '--server-port', help='The PORT we want to rebroadcast from (default: {})'.format(SERVER_PORT), default=SERVER_PORT, type=int)
+parser.add_argument('-s', '--simultaneous-connections', help='The numer of SIMULTANEOUS CONNECTIONS to server from the rebroadcaster (default: {})'.format(SIMULTANEOUS_CONNECTIONS), default=SIMULTANEOUS_CONNECTIONS, type=int)
+parser.add_argument(      '--verbose-help', help='Prints out the verbose help menu', action='store_true', default=False)
+args = parser.parse_args()
+
+# Check if we're just using the verbose output
+if args.verbose_help:
+    print(HELP)
+    sys.exit()
+
+
+print('Attempting to establish connection to {}:{} for establishing the rebroadcast'.format(args.source_ip, args.source_port))
 source = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-source.connect((source_ip, source_port))
+source.connect((args.source_ip, args.source_port))
 
-server_ip   = ''
-server_port = 7777
-print('Rebroadcasting on port {}'.format(server_port))
+print('Rebroadcasting to {}:{}'.format(args.server_ip if args.server_ip else 'INADDR_ANY', args.server_port))
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(('', server_port))
-server.listen(20)
+server.bind((args.server_ip, args.server_port))
+server.listen(args.simultaneous_connections)
 
 source_list = [server, source]
 read_list = []

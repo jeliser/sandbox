@@ -4,17 +4,25 @@ import socket
 
 help_str = """
 ############
-## You can run a TCP server
-##  > nc -l 5555
-## You can also run a proxy
-##  > socat tcp-l:5555,reuseaddr,fork tcp-l:6666,reuseaddr,fork
+## First
+##   You can run a TCP server
+##    > nc -l 5555
+##   You can also run a proxy
+##    > socat tcp-l:5555,reuseaddr,fork tcp-l:6666,reuseaddr,fork
 ##
-## You can pipe data to the TCP server using this command
-##  > cat ~/downloads/usws-van.csv | nc 127.0.0.1 5555
-##  > cat ~/downloads/usws-van.csv | nc 127.0.0.1 6666
+## Second
+##   You can run the rebroadcaster
+##    > ./rebroadcaster.py
+###
+## Third
+#   You can run the CSV publisher
+##    > ./csv_publisher
+##   You can pipe data to the TCP server using this command
+##    > cat ~/downloads/usws-van.csv | nc 127.0.0.1 6666
 ##
-## You can connect a listener to the rebroadcaster socket
-##  > nc 127.0.0.1 7777
+## Fourth
+##   You can connect a listener to the rebroadcaster socket to see that data
+##    > nc 127.0.0.1 7777
 ############
 """
 print(help_str)
@@ -49,7 +57,10 @@ while True:
                 for out in read_list:
                     out.send(data)
         else:
-            data = s.recv(1024)
+            try:
+                data = s.recv(1024)
+            except socket.error:
+                data = None
             if not data:
                 s.close()
                 read_list.remove(s)

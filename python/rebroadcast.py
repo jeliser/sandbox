@@ -3,6 +3,7 @@ import select
 import socket
 import argparse
 import sys
+import traceback
 
 HELP = """
 ############
@@ -48,36 +49,82 @@ if args.verbose_help:
     print(HELP)
     sys.exit()
 
+source = None
+server = None
+serve_list = []
+serve_lookup = dict()
 
-print('Attempting to establish connection to {}:{} for establishing the rebroadcast'.format(args.source_ip, args.source_port))
-source = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-source.connect((args.source_ip, args.source_port))
+try:
+    print('Attempting to establish connection to {}:{} for establishing the rebroadcast'.format(args.source_ip, args.source_port))
+    source = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    source.connect((args.source_ip, args.source_port))
 
-print('Rebroadcasting to {}:{}'.format(args.server_ip if args.server_ip else 'INADDR_ANY', args.server_port))
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((args.server_ip, args.server_port))
-server.listen(args.simultaneous_connections)
+    print('Rebroadcasting to {}:{}'.format(args.server_ip if args.server_ip else 'INADDR_ANY', args.server_port))
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((args.server_ip, args.server_port))
+    server.listen(0) # We want a backlog of zero connections
 
-source_list = [server, source]
-read_list = []
-while True:
-    readable, writable, errored = select.select(read_list + source_list, [], [])
-    for s in readable:
-        if s is server:
-            client_socket, address = server.accept()
-            read_list.append(client_socket)
-            print('Accepted connection from {}'.format(address))
-        elif s is source:
-            data = s.recv(1024)
-            if data:
-                for out in read_list:
-                    out.send(data)
-        else:
-            try:
+    source_list = [server, source]
+    while True:
+        readable, writable, errored = select.select(serve_list + source_list, [], [])
+        for s in readable:
+            if s is server:
+                ## What the proper way to reject connections when the list is full?
+                client_socket, address = server.accept()
+                if len(serve_list) < args.simultaneous_connections:
+                    serve_list.append(client_socket)
+                    serve_lookup[client_socket] = address
+                    print('Accepted connection from {}'.format(address))
+                else:
+                    print('Ignored connection from {} ... maximum number of concurrent connections ({}) accepted.'.format(address, args.simultaneous_connections))
+                    client_socket.shutdown(socket.SHUT_RDWR)
+                    client_socket.close()
+            elif s is source:
                 data = s.recv(1024)
-            except socket.error:
-                data = None
-            if not data:
-                s.close()
-                read_list.remove(s)
-                print('Removed connection')
+                if data:
+                    for out in serve_list:
+                        out.send(data)
+            else:
+                try:
+                    data = s.recv(1024)
+                except socket.error:
+                    data = None
+                if not data:
+                    s.close()
+                    serve_list.remove(s)
+                    print('Removed connection: {}'.format(serve_lookup.pop(s, 'unknown')))
+except KeyboardInterrupt: 
+    pass
+except:
+    traceback.print_exc()
+finally:
+
+    ### Ugh, I'm trying to clean up the sockets properly, but if there are served connections, our bound socket doesn't get released properly.
+
+    for s in serve_list:
+        try:
+            print('Closed connection: {}'.format(serve_lookup.pop(s, 'unknown')))
+            s.shutdown(socket.SHUT_RDWR)
+            s.close()
+        except:
+            traceback.print_exc()
+    serve_list = []
+
+    if server:
+        try:
+            print('Closed server connection')
+            server.shutdown(socket.SHUT_RDWR)
+            server.close()
+            server = None
+        except:
+            traceback.print_exc()
+
+    if source:
+        try:
+            print('Closed source connection')
+            source.shutdown(socket.SHUT_RDWR)
+            source.close()
+            source = None
+        except:
+            traceback.print_exc()
+

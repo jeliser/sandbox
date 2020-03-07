@@ -5,6 +5,7 @@ on:
     paths:
     - 'c/**'
     - 'cpp/**'
+    - 'cmake/**'
     - '.github/workflows/cpp.yml'
 
 jobs:
@@ -20,4 +21,7 @@ jobs:
     - name: Build the CPP applications
       run: docker build -t cpp:latest -f .Dockerfile .
       working-directory: ./cpp
+    - name: Build the CMAKE applications
+      run: docker build -t cmake:latest -f .Dockerfile .
+      working-directory: ./cmake
 

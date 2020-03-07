@@ -2,9 +2,9 @@ name: mbed CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    paths:
+    - 'mbed/**'
+    - '.github/workflows/mbed.yml'
 
 jobs:
   build:

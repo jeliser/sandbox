@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
     FD_ZERO(&rfds);
     FD_SET(fd, &rfds);
     retval = select(fd + 1, &rfds, NULL, NULL, &tv);
-    printf("%d  %d\n", retval, read(fd, &exp, sizeof(uint64_t)));
+    printf("%d  %d\n", retval, static_cast<int32_t>(read(fd, &exp, sizeof(uint64_t))));
   }
 
   exit(EXIT_SUCCESS);

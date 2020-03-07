@@ -1,0 +1,23 @@
+name: C/C++ CI
+
+on:
+  push:
+    paths:
+    - 'c/**'
+    - 'cpp/**'
+    - '.github/workflows/cpp.yml'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the C applications
+      run: docker build -t c:latest -f .Dockerfile .
+      working-directory: ./c
+    - name: Build the CPP applications
+      run: docker build -t cpp:latest -f .Dockerfile .
+      working-directory: ./cpp
+

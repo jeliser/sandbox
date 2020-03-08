@@ -71,9 +71,9 @@ class ICD(object):
   def __load(self, filename):
     with open(filename, 'r') as f:
       try:
-        self.yaml = yaml.load(f)
+        self.yaml = yaml.load(f, Loader=yaml.FullLoader)
         # NOTE: This should probably validate the YAML file while it's parsing it, or there should be a validation script to check the ICDS message file before running this script
-	for message in self.yaml[DICTS]:
+        for message in self.yaml[DICTS]:
           self.messages.append(MESSAGE(message))
       except yaml.YAMLError as exc:
         print(exc)
@@ -93,5 +93,5 @@ if __name__ == "__main__":
   args = parser.parse_args() 
 
   icds = ICD(args.icd)
-  print icds.get_messages()
+  print(icds.get_messages())
 

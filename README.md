@@ -1,4 +1,5 @@
 ![C/C++ CI](https://github.com/jeliser/sandbox/workflows/C/C++%20CI/badge.svg)
+![Python CI](https://github.com/jeliser/sandbox/workflows/Python%20CI/badge.svg)
 ![mbed CI](https://github.com/jeliser/sandbox/workflows/mbed%20CI/badge.svg)
 
 sandbox

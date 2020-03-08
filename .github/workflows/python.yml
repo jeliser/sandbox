@@ -1,0 +1,19 @@
+name: Python CI
+
+on:
+  push:
+    paths:
+    - 'jinja/**'
+    - '.github/workflows/python.yml'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Jinja applications
+      run: docker build -t jinja:latest -f .Dockerfile .
+      working-directory: ./jinja
+

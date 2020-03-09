@@ -16,3 +16,7 @@ jobs:
     - name: Build the mbed OS
       run: docker build -t mbed-os:latest -f mbed-os.dockerfile .
       working-directory: ./mbed
+    - name: Build the mbed blinker application
+      run: docker build -t mbed-blinker:latest -f mbed-blinker.dockerfile .
+      working-directory: ./mbed
+

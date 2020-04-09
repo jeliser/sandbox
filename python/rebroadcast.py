@@ -79,6 +79,7 @@ def main():
                 try:
                     print('Rebroadcasting to {}:{}'.format(args.server_ip if args.server_ip else 'INADDR_ANY', args.server_port))
                     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
                     server.bind((args.server_ip, args.server_port))
                     server.listen(0) # We want a backlog of zero connections
                 except:

@@ -3,6 +3,7 @@ import socket
 import os
 import time
 import argparse
+import traceback
 
 IP    = '127.0.0.1'
 PORT  = 8888
@@ -32,8 +33,9 @@ try:
     finally:
         fp.close()
 except:
-    pass
+    traceback.print_exc()
 finally:
     source.close()
 
+print('Closing application')
 

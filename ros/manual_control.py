@@ -2,6 +2,7 @@
 
 import curses
 
+import math
 import rospy
 import traceback
 from std_msgs.msg import Float64
@@ -12,23 +13,39 @@ ROBOT = 'scout_1'
 class ManualControl() :
 
     def __init__(self, robot):
-        self.FR_TOPIC = '/{}/fr_wheel_controller/command'.format(ROBOT)
-        self.FL_TOPIC = '/{}/fl_wheel_controller/command'.format(ROBOT)
-        self.BR_TOPIC = '/{}/br_wheel_controller/command'.format(ROBOT)
-        self.BL_TOPIC = '/{}/bl_wheel_controller/command'.format(ROBOT)
+        self.FR_WHEEL_TOPIC = '/{}/fr_wheel_controller/command'.format(ROBOT)
+        self.FL_WHEEL_TOPIC = '/{}/fl_wheel_controller/command'.format(ROBOT)
+        self.BR_WHEEL_TOPIC = '/{}/br_wheel_controller/command'.format(ROBOT)
+        self.BL_WHEEL_TOPIC = '/{}/bl_wheel_controller/command'.format(ROBOT)
+
+        self.FR_STEER_TOPIC = '/{}/fr_steering_arm_controller/command'.format(ROBOT)
+        self.FL_STEER_TOPIC = '/{}/fl_steering_arm_controller/command'.format(ROBOT)
+        self.BR_STEER_TOPIC = '/{}/br_steering_arm_controller/command'.format(ROBOT)
+        self.BL_STEER_TOPIC = '/{}/bl_steering_arm_controller/command'.format(ROBOT)
 
         rospy.init_node('motor_controller', anonymous=True)
-        self.fr = rospy.Publisher(self.FR_TOPIC, Float64, queue_size=10)
-        self.fl = rospy.Publisher(self.FL_TOPIC, Float64, queue_size=10)
-        self.br = rospy.Publisher(self.BR_TOPIC, Float64, queue_size=10)
-        self.bl = rospy.Publisher(self.BL_TOPIC, Float64, queue_size=10)
+        self.fr_wheel = rospy.Publisher(self.FR_WHEEL_TOPIC, Float64, queue_size=10)
+        self.fl_wheel = rospy.Publisher(self.FL_WHEEL_TOPIC, Float64, queue_size=10)
+        self.br_wheel = rospy.Publisher(self.BR_WHEEL_TOPIC, Float64, queue_size=10)
+        self.bl_wheel = rospy.Publisher(self.BL_WHEEL_TOPIC, Float64, queue_size=10)
+
+        self.fr_steer = rospy.Publisher(self.FR_STEER_TOPIC, Float64, queue_size=10)
+        self.fl_steer = rospy.Publisher(self.FL_STEER_TOPIC, Float64, queue_size=10)
+        self.br_steer = rospy.Publisher(self.BR_STEER_TOPIC, Float64, queue_size=10)
+        self.bl_steer = rospy.Publisher(self.BL_STEER_TOPIC, Float64, queue_size=10)
+
         self.rate = rospy.Rate(10) # 10Hz
 
-    def send_command(self, fr, br, fl, bl):
-        self.fr.publish(fr)
-        self.fl.publish(fl)
-        self.br.publish(br)
-        self.bl.publish(bl)
+    def send_command(self, throttle, steer):
+        self.fr_wheel.publish(throttle)
+        self.fl_wheel.publish(throttle)
+        self.br_wheel.publish(throttle)
+        self.bl_wheel.publish(throttle)
+
+        self.fr_steer.publish(-steer)
+        self.fl_steer.publish(-steer)
+        self.br_steer.publish(steer)
+        self.bl_steer.publish(steer)
 
     def run(self):
         curses.wrapper(self._run)
@@ -49,28 +66,16 @@ class ManualControl() :
                 elif c == 258: # Down
                     throttle = max(throttle - 10.0, -100.0)
                 elif c == 260: # Left
-                    steering = max(steering - 10.0, -100.0)
+                    steering = max(steering - (math.pi / 20.0), -math.pi)
                 elif c == 261: # Right
-                    steering = min(steering + 10.0, 100.0)
-
-                # Blend the commands together to get something vaguely steerable
-                if steering > 0.0:
-                    left  = throttle;
-                    right = throttle - ((steering / 100.0) * 2.0 * throttle);
-                else:
-                    right = throttle
-                    left  = throttle + ((steering / 100.0) * 2.0 * throttle);
-
-                right = min(right, 100.0) if right > 0.0 else max(right, -100.0)
-                left  = min(left, 100.0) if left > 0.0 else max(left, -100.0)
-
-                self.send_command(right, right, left, left)
+                    steering = min(steering + (math.pi / 20.0), math.pi)
+                
+                self.send_command(throttle, steering)
 
                 # print numeric value
                 stdscr.move(0, 0)
                 stdscr.addstr(MENU)
                 stdscr.addstr('throttle: {}    steering: {}\n'.format(throttle, steering))
-                stdscr.addstr('left: {}    right: {}\n'.format(left, right))
                 stdscr.refresh()
                 # return curser to start position
                 stdscr.move(0, 0)

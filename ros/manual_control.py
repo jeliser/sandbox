@@ -13,7 +13,7 @@ MENU = 'Use the arrow keys to drive: Up/Down = Throttle, Left/Right = Steering\n
 ROBOT = 'scout_1'
 SUBSYSTEM = 'wwr/motion_controller'
 
-DRIVE_MODES = ['UNKNOWN', 'ACKERMANN', 'SKID_STEER']
+DRIVE_MODES = ['UNKNOWN', 'ACKERMANN', 'CRABBING', 'SKID_STEER']
         
 class ManualControl() :
 

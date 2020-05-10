@@ -36,7 +36,8 @@ class State(Enum):
 class DriveMode(Enum):
     UNKNOWN = 0
     ACKERMANN = 1
-    SKID_STEER = 2
+    CRABBING = 2
+    SKID_STEER = 3
 
 
 class BaseRoverMotionController():
@@ -60,6 +61,8 @@ class BaseRoverMotionController():
 
         if self.drive_mode == DriveMode.UNKNOWN:
             self.send_josh_steer_command(throttle, steer)
+        elif self.drive_mode == DriveMode.CRABBING:
+            self.send_crabbing_command(throttle, steer)
         elif self.drive_mode == DriveMode.SKID_STEER:
             self.send_skid_steer_command(throttle, steer)
         else: # Default ACKERMANN steering
@@ -67,24 +70,38 @@ class BaseRoverMotionController():
 
     def send_josh_steer_command(self, throttle, steer):
         ## Because I need my own steering type :D ... this is my sandbox steering tests
-        for _, v in self.wheels.items():
+        for k, v in self.wheels.items():
             v.publish(throttle)
         for k, v in self.steer_arms.items():
             v.publish(-steer if 'f' in k else steer)
 
     def send_ackermann_command(self, throttle, steer):
-        ## Because I need my own steering type :D ... this is my sandbox steering tests
-        for _, v in self.wheels.items():
+        for k, v in self.wheels.items():
             v.publish(throttle)
         for k, v in self.steer_arms.items():
             v.publish(-steer if 'f' in k else 0.0)
 
-    def send_skid_steer_command(self, throttle, steer):
-        ## Because I need my own steering type :D ... this is my sandbox steering tests
-        for _, v in self.wheels.items():
+    def send_crabbing_command(self, throttle, steer):
+        for k, v in self.wheels.items():
             v.publish(throttle)
         for k, v in self.steer_arms.items():
             v.publish(-steer)
+
+    def send_skid_steer_command(self, throttle, steer):
+        # Blend the commands together to get something vaguely steerable
+        if steer > 0.0:
+            left  = throttle;
+            right = throttle - ((steer / math.pi) * 2.0 * throttle);
+        else:
+            right = throttle
+            left  = throttle + ((steer / math.pi) * 2.0 * throttle);
+        right = min(right, 100.0) if right > 0.0 else max(right, -100.0)
+        left  = min(left, 100.0) if left > 0.0 else max(left, -100.0)
+
+        for k, v in self.wheels.items():
+            v.publish(right if 'r' in k else left)
+        for k, v in self.steer_arms.items():
+            v.publish(0.0)
 
     def get_state(self):
         return self.state

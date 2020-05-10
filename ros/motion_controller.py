@@ -53,15 +53,38 @@ class BaseRoverMotionController():
             self.wheels[_id] = rospy.Publisher('/{}/{}_{}/command'.format(robot, _id, WHEEL_CONTROLLER), Float64, queue_size=1)
             self.steer_arms[_id] = rospy.Publisher('/{}/{}_{}/command'.format(robot, _id, STEERING_ARM_CONTROLLER), Float64, queue_size=1)
 
-    def set_command(self, data):
+    def set_motion_command(self, data):
+        ## This will probably be a normalized unit vector for the commanded direction/magnitude of motion
         throttle = data.x
         steer    = data.y
 
-        # Publish the wheel throttle and steering data
+        if self.drive_mode == DriveMode.UNKNOWN:
+            self.send_josh_steer_command(throttle, steer)
+        elif self.drive_mode == DriveMode.SKID_STEER:
+            self.send_skid_steer_command(throttle, steer)
+        else: # Default ACKERMANN steering
+            self.send_ackermann_command(throttle, steer)
+
+    def send_josh_steer_command(self, throttle, steer):
+        ## Because I need my own steering type :D ... this is my sandbox steering tests
         for _, v in self.wheels.items():
             v.publish(throttle)
         for k, v in self.steer_arms.items():
-            v.publish(steer if 'f' in k else -steer)
+            v.publish(-steer if 'f' in k else steer)
+
+    def send_ackermann_command(self, throttle, steer):
+        ## Because I need my own steering type :D ... this is my sandbox steering tests
+        for _, v in self.wheels.items():
+            v.publish(throttle)
+        for k, v in self.steer_arms.items():
+            v.publish(-steer if 'f' in k else 0.0)
+
+    def send_skid_steer_command(self, throttle, steer):
+        ## Because I need my own steering type :D ... this is my sandbox steering tests
+        for _, v in self.wheels.items():
+            v.publish(throttle)
+        for k, v in self.steer_arms.items():
+            v.publish(-steer)
 
     def get_state(self):
         return self.state
@@ -81,12 +104,12 @@ class MotionSubsystem():
     def __init__(self, robot):
         self.motion_controller = BaseRoverMotionController(robot)
 
-        self.motion_command = rospy.Subscriber("/{}/{}/motion/command".format(robot, SUBSYSTEM), Vector3, self.motion_controller.set_command);
+        self.motion_command = rospy.Subscriber("/{}/{}/motion/command".format(robot, SUBSYSTEM), Vector3, self.motion_controller.set_motion_command);
         self.drive_mode_command = rospy.Subscriber("/{}/{}/drive_mode/command".format(robot, SUBSYSTEM), String, self.motion_controller.set_drive_mode);
         self.drive_mode = rospy.Publisher("/{}/{}/drive_mode".format(robot, SUBSYSTEM), String, queue_size=1)
 
     def run(self):
-        rate = rospy.Rate(0.1) # 1Hz
+        rate = rospy.Rate(1.0) # 1Hz
         while not rospy.is_shutdown():
             self.drive_mode.publish(self.motion_controller.get_drive_mode())
             rate.sleep()

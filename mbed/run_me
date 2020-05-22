@@ -1,4 +1,6 @@
 #!/bin/bash
 
 docker build -t mbed-os:latest -f mbed-os.dockerfile . && \
-docker build -t mbed-blinker:latest -f mbed-blinker.dockerfile .
+docker build -t mbed-blinker:latest -f mbed-blinker.dockerfile . && \
+#docker build -t mbed-wifi:latest -f mbed-wifi.dockerfile . && \
+docker build -t mbed-imu:latest -f mbed-imu.dockerfile .

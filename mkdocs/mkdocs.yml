@@ -1,0 +1,72 @@
+site_name: Sample Documentation
+site_url: http://localhost
+site_author: jeliser@gmail.com
+site_description: >-
+  Sample description.
+
+nav:
+  - Home: index.md
+  - Topic 1:
+      - Intro: topic_1/intro.md
+      - Page 2: topic_1/page_2.md
+  - Topic 2: topic_2.md
+  - Topic 3:
+      - Subtopic 1:
+        - Page 1: topic_3/subtopic_1/page_1.md
+        - Page 2: topic_3/subtopic_1/page_2.md
+        - Page 3: topic_3/subtopic_1/page_3.md
+        - Page 4: topic_3/subtopic_1/page_4.md
+      - Subtopic 2: topic_3/subtopic_2.md
+      - Subtopic 3: topic_3/subtopic_3.md
+
+theme:
+  favicon: "images/favicon.ico"
+  logo: "images/logo.jpeg"
+  name: material
+  language: en
+  features:
+    - tabs
+    - instant
+  font:
+    text: Montserrat
+    code: Roboto Mono
+  palette:
+    primary: black
+    accent: red
+  repo_name: sandbox
+  repo_url: https://github.com/squidfunk/mkdocs-material
+
+plugins:
+  - search
+
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.attr_list
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde

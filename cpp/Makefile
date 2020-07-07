@@ -1,5 +1,5 @@
 
-all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client custom_deleter any
+all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client custom_deleter any time_conversion
 
 SRC_PATH=./src
 BIN_PATH=./bin

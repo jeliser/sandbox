@@ -1,20 +1,20 @@
 
-SRC_PATH=./src
-BIN_PATH=./bin
+SRC_PATH=src
+BIN_PATH=bin
 CC=g++ -std=c++14 -g
 
 all:: docker
 
-.DEFAULT::
+docker::
+	docker build -t interview-cpp:latest .
+
+release::
 	mkdir -p $(BIN_PATH)
-	$(CC) -L$(SRC_PATH) $(SRC_PATH)/*.cpp -o $(BIN_PATH)/$@
+	$(CC) -I$(SRC_PATH) $(SRC_PATH)/*.cpp -o $(BIN_PATH)/$@
 
 test::
 	mkdir -p $(BIN_PATH)
-	g++ src/moran.cpp test/main.cpp -lgtest -lpthread -o $(BIN_PATH)/$@
-
-docker::
-	docker build -t interview-cpp:latest .
+	$(CC) -I$(SRC_PATH) src/moran.cpp test/*.cpp -lgtest -lpthread -o $(BIN_PATH)/$@
 
 .PHONY:: clean
 clean::

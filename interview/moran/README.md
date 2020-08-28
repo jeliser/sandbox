@@ -22,9 +22,9 @@ The main application should accept command line arguments for the inputs to proc
 ### Example
 
 ```
-moran(132) ➞ "H"
+moran(132)    ➞ "H"
 moran(133.25) ➞ "M"
-moran("134") ➞ "N"
+moran("134")  ➞ "N"
 ```
 
 ## Execution

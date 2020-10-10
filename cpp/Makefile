@@ -1,5 +1,5 @@
 
-all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client custom_deleter any
+all: cmdline_args kill_thread periodic_file_writer linux_copy reference_change std_function fun_with_templates dlopen_example thread_pids consume_cpu select timer code_coverage floating_point_precision ws_server ws_client custom_deleter any catch_segv
 
 SRC_PATH=./src
 BIN_PATH=./bin
@@ -43,7 +43,7 @@ proto:
 	$(CC) -I./ $(SRC_PATH)/Record01.pb.cc $(SRC_PATH)/proto_example.cpp -o $(BIN_PATH)/$@ -lprotobuf -lpthread
 
 .DEFAULT: dir
-	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@
+	$(CC) $(SRC_PATH)/$@.cpp -o $(BIN_PATH)/$@ -rdynamic
 
 clean:
 	rm -rf $(BIN_PATH)

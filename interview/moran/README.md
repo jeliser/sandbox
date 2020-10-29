@@ -42,6 +42,16 @@ Successfully built de1b95bd5d72
 Successfully tagged interview-cpp:latest
 ```
 
+Or you can run the `docker` command manually.
+
+```bash
+> docker build -t interview-cpp:latest .
+.
+.
+Successfully built de1b95bd5d72
+Successfully tagged interview-cpp:latest
+```
+
 ## Run
 
 The following `docker` command will execute the application.

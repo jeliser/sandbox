@@ -1,6 +1,8 @@
 
 # Reference
 
+[Yocto 3.14 LTS docs](https://www.yoctoproject.org/docs/3.1.4/mega-manual/mega-manual.html)
+[Yocto 3.14 LTS ubuntu packages](https://www.yoctoproject.org/docs/3.1.4/mega-manual/mega-manual.html#ubuntu-packages)
 A good quick [reference](https://ubs_csse.gitlab.io/secu_os/tutorials/crops_yocto.html)
 
 # Running the container on a host machine

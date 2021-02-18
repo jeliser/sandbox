@@ -1,5 +1,10 @@
 ---
 - name: Install Bootstrap Dependencies
-  action: apt pkg={{item}} state=installed
-  with_items: { git, tmux }
-  become: yes
+  become: true
+  apt:
+    name: '{{item}}'
+    state: present
+  loop:
+    - git
+    - tmux
+  when: ansible_os_family == 'Debian'

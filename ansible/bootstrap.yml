@@ -1,0 +1,5 @@
+---
+- name: Bootstrap a new system
+  hosts: '{{target}}'
+  roles:
+    - { role: setup }

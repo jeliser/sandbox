@@ -1,0 +1,5 @@
+---
+- name: Install Bootstrap Dependencies
+  action: apt pkg={{item}} state=installed
+  with_items: { git, tmux }
+  become: yes

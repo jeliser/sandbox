@@ -1,0 +1,10 @@
+---
+- name: Install MAVEN dependencies
+  tags: [ apt, dependencies, maven ]
+  become: true
+  apt:
+    name: '{{item}}'
+    state: present
+  loop:
+    - maven
+

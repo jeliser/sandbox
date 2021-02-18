@@ -8,5 +8,4 @@
   loop:
     - python3
     - python3-pip
-  when: ansible_os_family == 'Debian'
 

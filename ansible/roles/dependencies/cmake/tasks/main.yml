@@ -1,0 +1,10 @@
+---
+- name: Install CMAKE dependencies
+  tags: [ apt, dependencies, cmake ]
+  become: true
+  apt:
+    name: '{{item}}'
+    state: present
+  loop:
+    - cmake
+

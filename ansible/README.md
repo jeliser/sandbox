@@ -31,18 +31,26 @@ provisioning is running.
 
 # Example usages
 
-## Simple case
+## Simple case (local machine)
+
+Note that it's easiest to use the IP of the a machine and not `127.0.0.1` because the **docker** container is not mounted on the host network.
 
 ``` bash
-[jeliser@ubuntu-vm:~/code/sandbox/ansible]  (git:master:b6372b5) 
- > ./run_me.sh ansible-playbook -e "target=127.0.0.1" -i inventory/inventory.ini --ask-become-pass bootstrap.yml
-```
+[jeliser@jeliser-thinkpad-x1:~/code/sandbox/ansible]  (git:master:f36fc48) 
+ > ./run_me.sh ansible-playbook -e "target=192.168.1.213" -i inventory/inventory.ini -u jeliser -K cmake.yml
+docker.io/ansible/ansible-runner:latest
+BECOME password: 
 
-## Different user (eg: demo)
+PLAY [Setup a CMAKE build system] ***********************************************************************************************************************************************************************************
 
-``` bash
-[jeliser@ubuntu-vm:~/code/sandbox/ansible]  (git:master:83b1c75) 
- > ./run_me.sh ansible-playbook -e "target=127.0.0.1" -i inventory/inventory.ini --ask-become-pass -u demo bootstrap.yml
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************************
+ok: [192.168.1.213]
+
+TASK [dependencies/cmake : Install CMAKE dependencies] **************************************************************************************************************************************************************
+changed: [192.168.1.213] => (item=cmake)
+
+PLAY RECAP **********************************************************************************************************************************************************************************************************
+192.168.1.213              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
 ## Different user with multiple target machines
@@ -50,10 +58,6 @@ provisioning is running.
 ``` bash
 [jeliser@ubuntu-vm:~/code/sandbox/ansible]  (git:master:83b1c75) 
  > ./run_me.sh ansible-playbook -e "target=192.168.1.206,192.168.1.216,192.168.1.217" -u ubuntu -i inventory/inventory.ini --ask-become-pass bootstrap.yml
-Using default tag: latest
-latest: Pulling from ansible/ansible-runner
-Digest: sha256:bd09ef403f2f90f2c6bd133d7533e939058903f69223c5f12557a49e3aed14bb
-Status: Image is up to date for ansible/ansible-runner:latest
 docker.io/ansible/ansible-runner:latest
 
 PLAY [Bootstrap a new system] ***************************************************************************************************************
@@ -87,10 +91,6 @@ Confirm New Vault password:
 ``` bash
 [jeliser@jeliser-thinkpad-x1:~/code/github_sandbox/ansible]  (git:master:66e3bdd) [ahead 1]
  > ./run_me.sh ansible-playbook -e "target=192.168.1.206,192.168.1.217,192.168.1.216" -u ubuntu -i inventory/sample_local_network.ini --ask-vault-pass --extra-vars '@passwd.yml' bootstrap.yml
-Using default tag: latest
-latest: Pulling from ansible/ansible-runner
-Digest: sha256:bd09ef403f2f90f2c6bd133d7533e939058903f69223c5f12557a49e3aed14bb
-Status: Image is up to date for ansible/ansible-runner:latest
 docker.io/ansible/ansible-runner:latest
 Vault password: 
 
@@ -116,4 +116,26 @@ PLAY RECAP *********************************************************************
 192.168.1.206              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 192.168.1.216              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 192.168.1.217              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+## Grab the Ansible settings
+
+``` bash
+[jeliser@jeliser-thinkpad-x1:~/code/sandbox/ansible]  (git:master:f36fc48)                                                                                                                                           
+ > ./run_me.sh ansible -m setup localhost                                                                                                                                                                            
+docker.io/ansible/ansible-runner:latest                                                                                                                                                                              
+[WARNING]: No inventory was parsed, only implicit localhost is available                                                                                                                                             
+localhost | SUCCESS => {                                                                                                                                                                                             
+    "ansible_facts": {                                                                                                                                                                                               
+        "ansible_all_ipv4_addresses": [                                                                                                                                                                              
+            "172.17.0.2"                                                                                                                                                                                             
+        ],                                                                                                                                                                                                           
+        "ansible_all_ipv6_addresses": [],                                                                                                                                                                            
+        "ansible_apparmor": {                                                                                                                                                                                        
+            "status": "disabled"                                                                                                                                                                                     
+        },                                                                                                                                                                                                           
+        "ansible_architecture": "x86_64",                                                                                                                                                                            
+        "ansible_bios_date": "10/15/2020",
+.
+.
 ```

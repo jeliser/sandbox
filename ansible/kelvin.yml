@@ -1,0 +1,7 @@
+---
+- name: Setup a CMAKE build system
+  hosts: '{{target}}'
+  roles:
+    - { role: dependencies/cmake }
+    - { role: dependencies/maven }
+

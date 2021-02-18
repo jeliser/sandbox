@@ -1,10 +1,14 @@
 ---
-- name: Install Bootstrap Dependencies
+- name: Install bootstrap dependencies
+  tags: [ apt, dependencies, bootstrap ]
   become: true
   apt:
     name: '{{item}}'
     state: present
   loop:
     - git
+    - vim
     - tmux
+    - wget
   when: ansible_os_family == 'Debian'
+

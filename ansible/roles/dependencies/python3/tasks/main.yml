@@ -1,0 +1,12 @@
+---
+- name: Install bootstrap dependencies
+  tags: [ apt, dependencies, python3 ]
+  become: true
+  apt:
+    name: '{{item}}'
+    state: present
+  loop:
+    - python3
+    - python3-pip
+  when: ansible_os_family == 'Debian'
+

@@ -2,4 +2,5 @@
 - name: Bootstrap a new system
   hosts: '{{target}}'
   roles:
-    - { role: setup }
+    - { role: dependencies/bootstrap }
+    - { role: dotfiles }

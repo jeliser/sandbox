@@ -3,4 +3,4 @@
   hosts: '{{target}}'
   roles:
     - { role: dependencies/bootstrap }
-    - { role: dotfiles }
+    - { role: dotfiles, tags: [dotfiles] }

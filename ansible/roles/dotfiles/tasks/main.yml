@@ -1,13 +1,15 @@
 ---
 - name: Checkout the latest dotfiles repo
-  tags: [ dotfiles ]
   git:
     repo: https://github.com/jeliser/dotfiles.git
     dest: ~/.devel_dotfiles
 
 - name: Install the pip dotfiles package
-  tags: [ dotfiles ]
   pip:
     name: dotfiles
 
+- name: Load the dotfiles
+  shell: ./load_dotfiles.sh
+  args:
+    chdir: ~/.devel_dotfiles
 

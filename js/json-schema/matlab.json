@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MATLAB schema definition file",
+  "description": "The schema filed used to define the inputs and outputs of MATLAB applications",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "title": "MATLAB Inputs",
+      "description": "The inputs to the MATLAB application",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/MatlabField"
+      }
+    },
+    "outputs": {
+      "title": "MATLAB Outputs",
+      "description": "The outputs to the MATLAB application",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "MatlabField": {
+      "title": "MATLAB type",
+      "Description": "The MATLAB type of the field",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/MatlabTypes"
+        }
+      }
+    },
+    "MatlabTypes": {
+      "type": "string",
+      "enum": [ "double", "single", "int8", "int16", "int32", "int64", "uint8", "uint16", "uint32", "uint64" ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "inputs",
+    "outputs"
+  ]
+}

@@ -17,14 +17,15 @@
       "description": "The outputs to the MATLAB application",
       "type": "array",
       "items": {
-        "type": "string"
+        "$ref": "#/definitions/MatlabField"
       }
     }
   },
   "definitions": {
     "MatlabField": {
       "title": "MATLAB type",
-      "Description": "The MATLAB type of the field",
+      "description": "The MATLAB type of the field",
+      "type": "object",
       "properties": {
         "name": {
           "type": "string"
@@ -32,11 +33,16 @@
         "type": {
           "$ref": "#/definitions/MatlabTypes"
         }
-      }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type"
+      ]
     },
     "MatlabTypes": {
       "type": "string",
-      "enum": [ "double", "single", "int8", "int16", "int32", "int64", "uint8", "uint16", "uint32", "uint64" ]
+      "enum": [ "double", "single", "int8", "int16", "int32", "int64", "uint8", "uint16", "uint32", "uint64", "string" ]
     }
   },
   "additionalProperties": false,

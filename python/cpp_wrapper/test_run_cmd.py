@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import argparse
 
@@ -12,8 +12,8 @@ if __name__ == "__main__":
   parser.add_argument(      '--dryrun', help='Dryrun the commands', action='store_true', default=False)
   
   parser.add_argument('-c', '--cmd', help='Command to execute', required=True)
-  parser.add_argument(      '--working-dir', help='Set the working directory', default=None)
+  parser.add_argument(      '--cwd', help='Set the current working directory', default=None)
 
   args = parser.parse_args() 
 
-  utils.run_cmd(cmd=args.cmd, working_dir=args.working_dir, verbose=args.verbose, dryrun=args.dryrun)
+  utils.run_cmd(cmd=args.cmd, cwd=args.cwd, verbose=args.verbose, dryrun=args.dryrun)

@@ -3,18 +3,46 @@ import nidaqmx
 import time
 import argparse
 import traceback
-
+import yaml
 
 parser = argparse.ArgumentParser(description='Publishes rows of data.')
 args = parser.parse_args()
 
-for name in nidaqmx.system.System().devices.device_names:
-  device = nidaqmx.system.Device(name)
-  print([name, device.product_category, device.product_num, device.product_type])
+class NIDevice():
+  def __init__(self, name):
+    self.device = nidaqmx.system.Device(name)
 
-  print('AI size: ', len(device.ai_physical_chans))
-  for ai in device.ai_physical_chans:
-    print('AI: ', ai)
+    print([name, self.device.product_category, self.device.product_num, self.device.product_type])
+    #print([name, self.device.product_category, self.device.accessory_product_nums, self.device.accessory_product_types, self.device.accessory_serial_nums])
+
+    print('AI size: ', len(self.device.ai_physical_chans))
+    for ai in self.device.ai_physical_chans:
+      print(ai.name)
+      print('AI: ', ai)
+    print([ai.name for ai in self.device.ai_physical_chans])
+
+    print('AO size: ', len(self.device.ao_physical_chans))
+    for ao in self.device.ao_physical_chans:
+      print(ao.name)
+      print('AO: ', ao)
+    print([ao.name for ao in self.device.ao_physical_chans])
+
+    print('DI size: ', len(self.device.di_ports))
+    for di in self.device.di_ports:
+      print(di.name)
+      print('DI: ', di)
+    print([di.name for di in self.device.di_ports])
+
+    print('DO size: ', len(self.device.do_ports))
+    for do in self.device.do_ports:
+      print(do.name)
+      print('DO: ', do)
+    print([do.name for do in self.device.do_ports])
+
+    #help(self.device)
+
+for name in nidaqmx.system.System().devices.device_names:
+  NIDevice(name)
 
 try:
   with nidaqmx.Task() as task:
@@ -27,3 +55,4 @@ except KeyboardInterrupt:
   pass
 except:
     traceback.print_exc()
+

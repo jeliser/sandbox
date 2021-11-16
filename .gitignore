@@ -2,6 +2,7 @@ bin/
 *.swp
 *.swo
 *.pyc
+*.asv
 *.so
 *.gc*
 demo.docx

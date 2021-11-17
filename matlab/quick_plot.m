@@ -51,4 +51,3 @@ function [arr, timestamps, data]= quick_plot(filename)
 %     plot(data.PELTIER02,"Color",'cyan','LineWidth',2.0);
 %     legend('HEATER01', 'PELTIER01', 'PELTIER02');
     
-    

@@ -5,5 +5,8 @@ bin/
 *.asv
 *.so
 *.gc*
+*.avi
+*.tif
+*.tiff
 demo.docx
 generated_data/

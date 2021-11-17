@@ -8,5 +8,6 @@ bin/
 *.avi
 *.tif
 *.tiff
+*.mp4
 demo.docx
 generated_data/

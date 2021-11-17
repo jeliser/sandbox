@@ -5,16 +5,20 @@ close all; clear all; [data, timestamps, table] = quick_plot('C:\Users\Joshua El
 %%
 close all; clc
 fig = figure();
-fig.Position = [100 100 1600 900];
+%fig.Position(1:2) = [10 10];
+%fig.Position = [100 100 1600 900];
 fig.Position = [124 -879 1600 900];
+title('Hello')
 
 spX = 3;
 spY = 3;
 start_row = 10;
 clear F;
 
-%for idx = 1:size(data, 1)-10
-range = 1:300;
+image_files = dir('C:\Users\Joshua Eliser\Desktop\sample_images\*.tif')';
+
+%range = 1:30;
+range = 1:size(data, 1)-10;
 for idx = range
     if mod(idx, 10) == 0
         fprintf('%02d%% complete\n', round((idx/size(range, 2))*100))
@@ -39,9 +43,11 @@ for idx = range
     colorbar
     
     subplot(spX, spY, [2, 3, 5, 6]);
-    image(imread('sample_image.tif'));
+    % Just cycle through the images in the directory right now, we'll do a timestamp lookup later.
+    % Images are taken every 5 seconds, so only change the image every 5th one.
+    iidx = mod(round(idx / 5), size(image_files, 2)) + 1;
+    imshow([image_files(iidx).folder '/' image_files(iidx).name]);
     title('Microscope Image')
-    % Change the image to greyscale
 
     subplot(spX, spY, [7]);
     hold on;
@@ -64,7 +70,7 @@ for idx = range
     F(idx) = getframe(fig);
 end
 
-writerObj = VideoWriter('test2.avi');
+writerObj = VideoWriter('cuvette', 'MPEG-4');
 writerObj.FrameRate = 25;
 open(writerObj);
 writeVideo(writerObj, F)

@@ -68,7 +68,7 @@ for i = 1:num_images
     img = imread(images{i});
     log_shifted = log(abs(fftshift(fft2(double(img)))));
     sums = [sums; sum(log_shifted, 1)];
-
+    size(log_shifted)
     subplot(num_images, 2, ((i-1)*2)+1);
     imshow(log_shifted, []);
     

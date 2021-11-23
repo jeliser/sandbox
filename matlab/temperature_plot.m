@@ -1,9 +1,10 @@
 
 %%
-close all; clear all; [data, timestamps, table] = quick_plot('C:\Users\Joshua Eliser\Desktop\EMI Testing\21_11_16__16_00_45.4704_data.csv');
+close all; clear all; [data, timestamps, table] = quick_plot('.\21_11_15__16_14_10.0276_data.csv');
 
 %%
-close all; clc
+%close all; clc
+
 fig = figure();
 fig.Position(1:2) = [10 10];
 fig.Position = [100 100 1600 900];
@@ -14,7 +15,7 @@ spY = 3;
 start_row = 10;
 clear F;
 
-image_files = dir('C:\Users\Joshua Eliser\Desktop\sample_images\*.tif')';
+image_files = dir('.\*.tif')';
 
 range = 1:30;
 range = 1:size(data, 1)-10;

@@ -58,7 +58,7 @@ figure();
 images = {
     'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\img_focus_none.tif';
     'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\img_focus_some.tif';
-    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\img_focus_mostly.tif'
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\img_focus_mostly.tif';
     };
 
 num_images = numel(images);
@@ -81,13 +81,13 @@ figure();
 
 % Reduce the range of samples to the ones around the spike.
 range_lower = 1500;
-range_upper = 2499;
+range_upper = 2500;
 
 subplot(2, 1, 1);
 hold on;
-plot(sums(1, range_lower:range_upper));
-plot(sums(2, range_lower:range_upper));
-plot(sums(3, range_lower:range_upper));
+for i = 1 : size(sums, 1)
+    plot(sums(i, range_lower:range_upper));
+end
 
 subplot(2, 1, 2);
 sosums = [];

@@ -11,7 +11,7 @@ WORKDIR NILinux2021Q4DeviceDrivers
 RUN apt install ./ni-ubuntu2004firstlook-drivers-2021Q4.deb
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  ni-daqmx \
+  ni-daqmx* \
   && apt-get -y autoremove && rm -rf /var/lib/apt/lists/*
 
 RUN dkms autoinstall

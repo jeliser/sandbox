@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   ca-certificates linux-headers-$(uname -r) systemctl \
   build-essential wget unzip
 
-WORKDIR /tmp
+WORKDIR /tmp_ni
 RUN wget --no-check-certificate https://download.ni.com/support/softlib/MasterRepository/LinuxDrivers2021Q4/NILinux2021Q4DeviceDrivers.zip
 RUN unzip NILinux2021Q4DeviceDrivers.zip
 WORKDIR NILinux2021Q4DeviceDrivers
@@ -15,3 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt-get -y autoremove && rm -rf /var/lib/apt/lists/*
 
 RUN dkms autoinstall
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install init -y

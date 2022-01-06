@@ -18,7 +18,7 @@ clear F;
 image_files = dir('.\*.tif')';
 
 range = 1:30;
-range = 1:size(data, 1)-10;
+%range = 1:size(data, 1)-10;
 for idx = range
     if mod(idx, 10) == 0
         fprintf('%02d%% complete\n', round((idx/size(range, 2))*100))
@@ -27,7 +27,7 @@ for idx = range
     clf;
     row = idx + 10;
 
-    subplot(spX, spY, [1, 2]);
+    sp_cuvette = subplot(spX, spY, [1, 2]);
     
     x=[2:18];
     y=[-0.02 -0.01 0 0.01 0.02];
@@ -41,6 +41,8 @@ for idx = range
     % Make the cuvette temp plot thinner to match the cuvette in reality
     % Set the color range
     colorbar
+    patch(sp_cuvette, [5 10 10 5], [-0.01 -0.01 0.01 0.01], 'r', ...
+    'EdgeColor', 'k', 'FaceAlpha', 0.3); % FaceAlpha controls transparency
     
     subplot(spX, spY, [4, 5, 7, 8]);
     % Just cycle through the images in the directory right now, we'll do a timestamp lookup later.

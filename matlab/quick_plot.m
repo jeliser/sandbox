@@ -1,4 +1,4 @@
-function [arr, timestamps, data]= quick_plot(filename)
+function [arr, timestamps, data] = quick_plot(filename)
     data = readtable(filename);
     arr = table2array(data(:,2:end));
     timestamps = data(:,1);
@@ -60,28 +60,42 @@ images = {
     'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\img_focus_some.tif';
     'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\img_focus_mostly.tif';
     };
+% Reduce the range of samples to the ones around the spike.
+range_lower = 1500;
+range_upper = 2500;
+
+images = {
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\1_01_focus.png';
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\1_02_less.png';
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\1_03_blurry.png';
+    };
+range_lower = 1;
+range_upper = 2000;
+
 
 num_images = numel(images);
 sums = [];
 
 for i = 1:num_images
     img = imread(images{i});
+    subplot(num_images, 4, ((i-1)*4)+1);
+    imshow(img);
+
     log_shifted = log(abs(fftshift(fft2(double(img)))));
     sums = [sums; sum(log_shifted, 1)];
-    size(log_shifted)
-    subplot(num_images, 2, ((i-1)*2)+1);
+    subplot(num_images, 4, ((i-1)*4)+2);
     imshow(log_shifted, []);
     
-    subplot(num_images, 2, ((i-1)*2)+2);
+    subplot(num_images, 4, ((i-1)*4)+3);
     plot(sums(i, :));
+
+    subplot(num_images, 4, ((i-1)*4)+4);
+    bar(std(sums(i, :)'));
+    ylim([0 1200]);
 end
 
 % 
 figure();
-
-% Reduce the range of samples to the ones around the spike.
-range_lower = 1500;
-range_upper = 2500;
 
 subplot(2, 1, 1);
 hold on;

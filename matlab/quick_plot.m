@@ -65,9 +65,9 @@ range_lower = 1500;
 range_upper = 2500;
 
 images = {
-    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\1_01_focus.png';
-    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\1_02_less.png';
-    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\1_03_blurry.png';
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\images\1_01_focus.png';
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\images\1_02_less.png';
+    'C:\Users\Joshua Eliser\Desktop\code\sandbox\matlab\images\1_03_blurry.png';
     };
 range_lower = 1;
 range_upper = 2000;

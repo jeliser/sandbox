@@ -28,6 +28,7 @@ docker stop ni-runner
 ``` bash
 [jeliser@jeliser-thinkpad-x1:~/code/sandbox/ni]  (git:master:4e3a22d) [ahead 1]
  > docker run -it --privileged --cap-add=ALL --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /dev:/dev -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name ni-runner --stop-signal SIGRTMIN+3 ni-drivers:latest /usr/sbin/init
+ > docker run -it --privileged -v /dev:/dev -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name ni-runner --stop-signal SIGRTMIN+3 ni-drivers:latest /usr/sbin/init
 ```
 
 ## Running in the container

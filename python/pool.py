@@ -3,19 +3,15 @@
 import multiprocessing
 import time
 
-data = (
-    ['a', '2'], ['b', '4'], ['c', '6'], ['d', '8'],
-    ['e', '1'], ['f', '3'], ['g', '5'], ['h', '7']
-)
-
-def mp_worker(*(inputs, the_time)):
-    print(" Processs %s\tWaiting %s seconds" % (inputs, the_time))
-    time.sleep(int(the_time))
-    print(" Process %s\tDONE" % inputs)
+def mp_worker(tup):
+    (sleep, value) = tup
+    time.sleep(int(sleep))
+    print(" Process %s\tDONE" % value)
 
 def mp_handler():
-    p = multiprocessing.Pool(2)
-    p.map(mp_worker, data)
+    p = multiprocessing.Pool(10)
+    p.map(mp_worker, [(3, 'A'), (4, 'B'), (5, 'C'), (1, 'D'), (2, 'E'), (3, 'F')])
 
 if __name__ == '__main__':
     mp_handler()
+

@@ -14,7 +14,9 @@ from scipy import io
 '''
 Method for processing the files into better data structures
 '''
-def process_file((args, name)):
+def process_file(tup):
+  (args, name) = tup
+
   # Scenarios that should be ignored
   ignore = ['Purge', 'LTF03']
   if any(filter(lambda i: i in name, ignore)):
@@ -83,14 +85,12 @@ def main():
 
   # Check if we're just using the verbose output
   if args.verbose_help:
-    print('More help')
+    print('Add more help here')
     sys.exit()
 
   try:
     p = multiprocessing.Pool(args.pool)
-    for name in sorted(glob.glob(f'{args.input_dir}/**/*.csv', recursive=True)):
-      process_file([args, name])
-    #p.map(process_file, (args, sorted(glob.glob(f'{args.input_dir}/**/*.csv', recursive=True))))
+    p.map(process_file, [(args, filename) for filename in sorted(glob.glob(f'{args.input_dir}/**/*.csv', recursive=True))])
   except KeyboardInterrupt: 
     running = False
   except:

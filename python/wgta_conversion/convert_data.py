@@ -5,7 +5,7 @@ import argparse
 import traceback
 import csv
 import glob
-import json
+import yaml
 import multiprocessing
 import numpy as np
 import pandas as pd
@@ -58,8 +58,14 @@ def process_file(tup):
       idx = np.where(np.roll(v,-1)!=v)[0]
 
       # Make the column names something easier to understand
-      lookup = json.load(open('lookup.json'))
+      lookup = yaml.safe_load(open('lookup.yaml'))
       df.rename(columns=lookup, inplace=True)
+
+      # Show any duplicate column names
+      cols = list(df.columns)
+      duplicates = set([x for x in cols if cols.count(x) > 1])
+      if any(duplicates):
+        print(duplicates)
 
       # Display any of the columns that might still be too large for MATLAB column names
       failed = False
@@ -154,7 +160,7 @@ def main():
     p.map(process_file, [(args, filename) for filename in sorted(glob.glob(f'{args.input_dir}/**/*.csv', recursive=True))])
 
     # Create a single file with the columns and data structures that we need.
-    p.map(combine_file, [(args, path) for path in sorted(glob.glob(f'{args.output_dir}/*'))])
+    #p.map(combine_file, [(args, path) for path in sorted(glob.glob(f'{args.output_dir}/*'))])
     
 
   except KeyboardInterrupt: 

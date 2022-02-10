@@ -144,14 +144,14 @@ def combine_file(tup):
     # TODO: Coerce the timestamp to be clean 10Hz steps
     df = pd.DataFrame()
     df.insert(0, 'UNIX_TIME', df_systems['TIME'].apply(lambda t: time.mktime(t.timetuple())+t.microsecond*1E-6))
-    df.insert(1, 'UNIX_MET', df['UNIX_TIME'].diff().fillna(0).apply(lambda t: '{:0.3f}'.format(t)))
+    df.insert(1, 'UNIX_MET', df['UNIX_TIME'].diff().fillna(0).apply(lambda t: float('{:0.3f}'.format(t))))
 
     for frame in [df_systems, df_gnc]:
       frame['TIME'] = frame['TIME'].apply(lambda f: f.isoformat('T'))
  
     # Start building the unified data frame
     headers = ['TIME', 'MET_SUBSECS']
-    pressures = ['ED01_PRESS', 'ED02_PRESS', 'ED03_PRESS', 'EGC_PRESS', 'N2_CTRL_VALVE_FEED_PRESS', 'PROP_TANKS_FEED_PRESS', 'N2_TANKS_PRESS', 'PROP_TANKS_PRESS', 'THRUSTERS_FEED_PRESS']
+    pressures = ['ED01_PRESS', 'ED02_PRESS', 'ED03_PRESS', 'EGC_PRESS', 'N2_CTRL_VALVE_FEED_PRESS', 'N2_PROP_TANKS_FEED_PRESS', 'N2_TANKS_PRESS', 'PROP_TANKS_PRESS', 'THRUSTERS_FEED_PRESS']
     temperatures = ['EGC_THROTTLE_MOTOR_TEMP', 'EA01_FUEL_FEED_TUBE_TEMP', 'ED01_FUEL_FEED_TUBE_TEMP', 'ED01_TEMP', 'ED02_TEMP', 'ED03_TEMP', 'EGC_FUEL_FEED_TUBE_TEMP', 'EGC_TEMP', 'MAIN_FUEL_FEED_TUBE_TEMP', 'N2_TANK1_TEMP', 'N2_TANK2_TEMP', 'PROP_TANK1_BOTTOM_TEMP', 'PROP_TANK1_TOP_TEMP', 'PROP_TANK2_BOTTOM_TEMP', 'PROP_TANK2_TOP_TEMP']
     currents = ['N2_ISO_VALVE_CURR', 'PROP_ISO_VALVE_CURR', 'PROP_LOAD_VALVE_CURR', 'ED01_CURR', 'ED02_CURR', 'ED03_CURR', 'EA01_CURR', 'EA02_CURR', 'EA03_CURR', 'EA04_CURR', 'EA05_CURR', 'EA06_CURR', 'EA07_CURR', 'EA08_CURR', 'EA09_CURR', 'EA10_CURR', 'EA11_CURR', 'EA12_CURR', 'EGC_THROTTLE_MOTOR_CURR']
     misc = ['LANDING_LEG_0', 'LANDING_LEG_1', 'LANDING_LEG_2', 'LAND_NOW_ABORT', 'VEHICLE_STATE']
@@ -195,6 +195,7 @@ def main():
   parser.add_argument('-i', '--input-dir', help='The directory with the raw CSV files to be processed', required=True)
   parser.add_argument('-o', '--output-dir', help='The directory to place the converted CSV data', required=True)
   parser.add_argument('-j', '--pool', help='The number of threads to put in the thread pool (default: 4)', default=4, type=int)
+  parser.add_argument(      '--skip-filtering', help='Skip the filtering process', action='store_true', default=False)
   parser.add_argument('-v', '--verbose', help='Prints out the verbose processing information', action='store_true', default=False)
   parser.add_argument(      '--verbose-help', help='Prints out the verbose help menu', action='store_true', default=False)
   args = parser.parse_args()
@@ -211,8 +212,9 @@ def main():
 
   try:
     p = multiprocessing.Pool(args.pool)
-    # Perform the initial processing and cleanup of the raw data files
-    p.map(process_file, [(args, filename) for filename in sorted(glob.glob(f'{args.input_dir}/**/*.csv', recursive=True))])
+    if not args.skip_filtering:
+      # Filter the initial processing and cleanup of the raw data files
+      p.map(process_file, [(args, filename) for filename in sorted(glob.glob(f'{args.input_dir}/**/*.csv', recursive=True))])
 
     # Create a single file with the columns and data structures that we need.
     p.map(combine_file, [(args, path) for path in sorted(glob.glob(f'{args.output_dir}/*'))])

@@ -21,9 +21,10 @@ def save_data(opath, name, df):
   os.makedirs(opath, exist_ok=True)
   fullpath = os.path.join(opath, os.path.splitext(os.path.basename(name))[0])
   df.to_csv(fullpath + '.csv', index=False)
-  df.to_pickle(fullpath + '.pkl')
+  reload_df = pd.read_csv(fullpath + '.csv', sep=',', low_memory=False) # Reload the DF to make sure the datatypes are clean
+  reload_df.to_pickle(fullpath + '.pkl')
   try:
-    io.savemat(fullpath + '.mat', {f'{os.path.basename(fullpath)}':df.to_dict('list')}, oned_as='column')
+    io.savemat(fullpath + '.mat', {f'{os.path.basename(fullpath)}':reload_df.to_dict('list')}, oned_as='column')
   except:
     traceback.print_exc()
 
@@ -177,8 +178,20 @@ def combine_file(tup):
         for field in fields:
           df[field] = df_gnc[field]
 
+    # Find all of the rows that have the '?????' missing data field.
+    idxs = set()
+    for col in df.columns:
+      idxs |= set(df.loc[df[col] == '?????'].index)
+    # We can easily drop the first and last rows, no real worries there.
+    # TODO: The dataset only has a problem on the very first row, so that's why I'm not checking all the different cases.
+    df = df.drop(idxs)
+
     # Wrap the data to the unified output file
-    opath = os.path.join(args.output_dir, os.path.basename(systems).split('_')[0])
+    #opath = os.path.join(args.output_dir, os.path.basename(systems).split('_')[0])
+    #name = os.path.basename(opath)
+    #save_data(opath, name, df)
+
+    opath = os.path.join(args.output_dir, '..', 'combined', os.path.basename(systems).split('_')[0])
     name = os.path.basename(opath)
     save_data(opath, name, df)
  

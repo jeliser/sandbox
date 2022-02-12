@@ -7,14 +7,14 @@
 #include <signal.h>
 #include <sys/select.h>
 
-#include <ACS.hpp>
+#include <ACM.hpp>
 
 // Run loop boolean
 std::atomic<bool> running(true);
 // regex for sanitizing the input stream
 const std::regex re("^(-?\\d{1,})[ ]{1,}(-?\\d{1,})[ ]{1,}(-?\\d{1,})$");
 // The user menu
-const std::string MENU = "Input ACS movement (x y z) and press enter (ex: 3 -8 5), ctrl+c to exit:";
+const std::string MENU = "Input ACM movement (x y z) and press enter (ex: 3 -8 5), ctrl+c to exit:";
 
 // System handler for reading the SIGINT signal
 void sig_handler(int s){
@@ -30,8 +30,8 @@ int main() {
   // The event loop should not block indefinitely, so give it timeout
   struct timeval tv {0, 100000};
 
-  // Create an instance of the ACS model
-  auto model = std::make_unique<ACS>();
+  // Create an instance of the ACM model
+  auto model = std::make_unique<ACM>();
   // Print the user menu
   std::cout << MENU << std::endl;
 

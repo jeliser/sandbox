@@ -1,11 +1,11 @@
-#ifndef ACS_HPP
-#define ACS_HPP
+#ifndef ACM_HPP
+#define ACM_HPP
 
 #include <iostream>
 #include <map>
 #include <cmath>
 
-class ACS {
+class ACM {
 
 public:
 
@@ -33,10 +33,10 @@ public:
 
 public:
 
-  ACS() {
+  ACM() {
   }
 
-  ~ACS() {
+  ~ACM() {
   }
 
   void step(const int32_t x, const int32_t y, const int32_t z) {
@@ -85,4 +85,4 @@ private:
 };
 
 
-#endif /* ACS_HPP */
+#endif /* ACM_HPP */

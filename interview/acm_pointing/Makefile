@@ -3,7 +3,7 @@ SRC_PATH=src
 BIN_PATH=bin
 CC=g++ -std=c++14 -g
 
-all:: docker
+all:: release
 
 docker::
 	docker build -t interview-cpp:latest .

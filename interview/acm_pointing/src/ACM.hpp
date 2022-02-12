@@ -1,10 +1,12 @@
 #ifndef ACM_HPP
 #define ACM_HPP
 
+// system includes
 #include <iostream>
 #include <map>
 #include <cmath>
 
+// The Attitude Control Motor class
 class ACM {
 
 public:

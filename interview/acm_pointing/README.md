@@ -51,26 +51,15 @@ The application can be built using Docker and the following commands.  This is h
 You also don't have to know the host machine setup in most cases to run the application.
 
 ``` bash
- > make docker && docker run --rm -it --entrypoint /tmp/cpp/bin/test interview-cpp && docker run --rm -it --entrypoint /tmp/cpp/bin/release interview-cpp
+ > make docker && docker run --rm -it --entrypoint /tmp/cpp/bin/test interview-cpp && docker run --rm -it --entrypoint /tmp/cpp/bin/release interview-cpp 
+
 docker build -t interview-cpp:latest .
-[+] Building 5.0s (11/11) FINISHED                                                                                                                                                                                                                                                          
- => [internal] load build definition from Dockerfile                                                                                                                                                                                                                                   0.0s
- => => transferring dockerfile: 38B                                                                                                                                                                                                                                                    0.0s
- => [internal] load .dockerignore                                                                                                                                                                                                                                                      0.0s
- => => transferring context: 2B                                                                                                                                                                                                                                                        0.0s
- => [internal] load metadata for docker.io/library/ubuntu:20.04                                                                                                                                                                                                                        0.0s
- => [1/6] FROM docker.io/library/ubuntu:20.04                                                                                                                                                                                                                                          0.0s
- => [internal] load build context                                                                                                                                                                                                                                                      0.0s
- => => transferring context: 2.75kB                                                                                                                                                                                                                                                    0.0s
- => CACHED [2/6] RUN apt update && apt install -y --no-install-recommends   build-essential libgtest-dev   && apt -y autoremove && rm -rf /var/lib/apt/lists/*                                                                                                                         0.0s
- => CACHED [3/6] WORKDIR /tmp/cpp/                                                                                                                                                                                                                                                     0.0s
- => [4/6] COPY . .                                                                                                                                                                                                                                                                     0.0s
- => [5/6] RUN make release -j4                                                                                                                                                                                                                                                         2.7s
- => [6/6] RUN make test -j4                                                                                                                                                                                                                                                            2.1s
- => exporting to image                                                                                                                                                                                                                                                                 0.1s 
- => => exporting layers                                                                                                                                                                                                                                                                0.1s
- => => writing image sha256:c78b6d306744ee44686fe1c0a566e9d40dcce5acc5e0037e5df35fb79ced3e39                                                                                                                                                                                           0.0s
- => => naming to docker.io/library/interview-cpp:latest                                                                                                                                                                                                                                0.0s
+[+] Building 5.0s (11/11) FINISHED
+.
+.
+ => => exporting layers
+ => => writing image sha256:c78b6d306744ee44686fe1c0a566e9d40dcce5acc5e0037e5df35fb79ced3e39
+ => => naming to docker.io/library/interview-cpp:latest
 [==========] Running 3 tests from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 3 tests from ACM

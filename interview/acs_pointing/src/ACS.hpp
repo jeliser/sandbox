@@ -11,6 +11,7 @@ public:
 
   // Coordinates (internal state)
   typedef struct Coordinates_t {
+    // Requirement was a 3 axis ACM
     int32_t x;
     int32_t y;
     int32_t z;
@@ -44,7 +45,6 @@ public:
 
   void step(const Coordinates_t& coordinates) {
     _coordinates += coordinates;
-    std::cout << _coordinates.x << "  " << _coordinates.y << "  " << _coordinates.z << std::endl;
   }
 
   Coordinates_t get_coordinates() const {
@@ -66,6 +66,7 @@ private:
 
   Coordinates_t _coordinates = {0, 0, 0};
 
+  // Improvement: Load this lookup table dynamically from a YAML file
   // The planet lookups
   std::map<std::pair<int32_t, int32_t>, std::string> _planets_p = {
     {{ 1,  1}, "GRACE"},

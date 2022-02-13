@@ -56,11 +56,13 @@ def process_file(tup):
       if any(keys):
         if args.verbose:
           print(f'Filtering on {keys[0]} in {name.split(args.input_dir)[-1]}')
- 
+
+        ## Filter all the duplicate lines to include the latest updates for all 
         ## np.where and np.roll are apparently the key
         ## https://stackoverflow.com/questions/19125661/find-index-where-elements-change-value-numpy
         v = df[keys[0]]  # TODO: This should verify that it's only a single key been found
         idx = np.where(np.roll(v,-1)!=v)[0]
+        df = df.iloc[idx]
  
         # Make the column names something easier to understand
         lookup = yaml.safe_load(open('lookup.yaml'))
@@ -81,12 +83,13 @@ def process_file(tup):
         if failed:
           return
 
-        # Fix the TIME column to a ISO standard representation
-        #for frame in [df_systems, df_gnc]:
-        #  frame['TIME'] = frame['TIME'].apply(lambda f: str(datetime.datetime.strptime(f, "%Y-%j %H:%M:%S.%f").isoformat('T')))
+        # Fix the TIME column to a ISO standard representation and update the pandas index reference
+        df['TIME'] = df['TIME'].apply(lambda t: datetime.datetime.strptime(t, "%Y-%j %H:%M:%S.%f").isoformat('T'))
+        df.index = pd.to_datetime(df.index)
 
         # Extract the subset of data from the original data frame using the filtered indexes
-        save_data(opath, name, df.iloc[idx])
+        save_data(opath, name, df)
+
   except:
     print(f'Failed filtering {name}')
     traceback.print_exc()
@@ -114,42 +117,16 @@ def combine_file(tup):
     # Secondarily TIME can be used if those fields are not available
     # TODO: It's possible that other files might have transitive relationships that we can use to get a perfect match:  A(x)->B(x, y)->C(y, z)
  
-    # Start off with just using the TIME and finding the closest match.
-    for frame in [df_systems, df_gnc]:
-      frame['TIME'] = frame['TIME'].apply(lambda t: datetime.datetime.strptime(t, "%Y-%j %H:%M:%S.%f"))
-
     # Make sure the number of rows is the same between the files (removes the NaN at the end)
     min_rows = min(len(df_systems.index), len(df_gnc.index))
     df_systems = df_systems[:][0:min_rows]
     df_gnc = df_gnc[:][0:min_rows]
 
-    # TODO: Not going to worry about this time alignment at the moment.  We can remove the problematic lines in the source files
-    '''
-    # Computed the time difference between the two dataset
-    times = pd.DataFrame()
-    times['SYSTEMS'] = df_systems['TIME']
-    times['GNC'] = df_gnc['TIME']
-    times['DIFF'] = times.apply(lambda r: (r[0] - r[1]).total_seconds(), axis=1)
-
-    print(path)
-    print(times.sort_values(by=['DIFF']))
-    print(df_systems['MET_SUBSECS'].diff().sort_values())
-    print('\n\n')
-    '''
-
-    #print(type(df_systems['TIME'][0]))
-    #print(df_systems['TIME'].sub(df_gnc['TIME'], axis = 0))
-    #print(df_systems['TIME'][0], df_gnc['TIME'][0], (df_systems['TIME'][0] - df_gnc['TIME'][0]).total_seconds())
-
     # Load the UNIX time into the output data frame
     # TODO: Coerce the timestamp to be clean 10Hz steps
     df = pd.DataFrame()
-    df.insert(0, 'UNIX_TIME', df_systems['TIME'].apply(lambda t: time.mktime(t.timetuple())+t.microsecond*1E-6))
-    df.insert(1, 'UNIX_MET', df['UNIX_TIME'].diff().fillna(0).apply(lambda t: float('{:0.3f}'.format(t))))
+    df.insert(0, 'UNIX', df_systems['TIME'].apply(lambda t: pd.Timestamp(t).timestamp()))
 
-    for frame in [df_systems, df_gnc]:
-      frame['TIME'] = frame['TIME'].apply(lambda f: f.isoformat('T'))
- 
     # Start building the unified data frame
     headers = ['TIME', 'MET_SUBSECS']
     pressures = ['ED01_PRESS', 'ED02_PRESS', 'ED03_PRESS', 'EGC_PRESS', 'N2_CTRL_VALVE_FEED_PRESS', 'N2_PROP_TANKS_FEED_PRESS', 'N2_TANKS_PRESS', 'PROP_TANKS_PRESS', 'THRUSTERS_FEED_PRESS']
@@ -170,7 +147,6 @@ def combine_file(tup):
       for field in fields:
         df[field] = df_gnc[field]
 
-
     # Check for the GNCT and include it if it's available
     if any(filter(lambda f: 'GNCT' in f, df_gnc.columns)):
       truth = ['GNCT_XCM_0', 'GNCT_XCM_1', 'GNCT_XCM_2', 'GNCT_XCM_3', 'GNCT_XCM_4', 'GNCT_XCM_5', 'GNCT_XCM_6', 'GNCT_XCM_7', 'GNCT_XCM_8', 'GNCT_XCM_9']
@@ -186,14 +162,14 @@ def combine_file(tup):
     # TODO: The dataset only has a problem on the very first row, so that's why I'm not checking all the different cases.
     df = df.drop(idxs)
 
-    # Wrap the data to the unified output file
-    #opath = os.path.join(args.output_dir, os.path.basename(systems).split('_')[0])
-    #name = os.path.basename(opath)
-    #save_data(opath, name, df)
-
     opath = os.path.join(args.output_dir, '..', 'combined', os.path.basename(systems).split('_')[0])
     name = os.path.basename(opath)
+    save_data(opath, name + '_ALL', df)
+
+    # Only include the data from the flight period.
+    df = df.iloc[df[df['VEHICLE_STATE'] == 12].first_valid_index():]
     save_data(opath, name, df)
+
  
   except:
     print(f'Failed processing {path}')

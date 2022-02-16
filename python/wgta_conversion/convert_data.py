@@ -14,6 +14,16 @@ import pandas as pd
 from scipy import io
 
 '''
+Save the data frame to the sktime TimeSeries output files.
+'''
+def save_data_ts(opath, name, df):
+  # Create the output directory and write out all the file types
+  os.makedirs(opath, exist_ok=True)
+  fullpath = os.path.join(opath, os.path.splitext(os.path.basename(name))[0])
+  df.to_pickle(fullpath + '.ts')
+
+
+'''
 Save the data frame to the output files.
 '''
 def save_data(opath, name, df):
@@ -170,6 +180,10 @@ def combine_file(tup):
     df = df.iloc[df[df['VEHICLE_STATE'] == 12].first_valid_index():]
     save_data(opath, name, df)
 
+    ts = pd.DataFrame()
+    for col in df.columns:
+      ts.insert(len(ts.columns), col, [pd.DataFrame(list(df[col]))])
+    save_data_ts(opath, name, ts)
  
   except:
     print(f'Failed processing {path}')

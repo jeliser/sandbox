@@ -1,0 +1,7 @@
+tensorflow-gpu
+matplotlib
+pandas
+sklearn
+seaborn
+numpy
+statsmodels

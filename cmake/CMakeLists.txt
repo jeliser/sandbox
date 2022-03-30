@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.1.0)
 project(cpp-cmake-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
 
 # Command line option to disable the unit tests
-option(ENABLE_TESTS "Enable unit tests" OFF) 
-option(BUILD_DOCS "Build the documentation" OFF)
+option(TESTS "Enable unit tests" OFF) 
+option(DOCS "Build the documentation" OFF)
 
 # Validate the matched compilers
 if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
@@ -58,13 +58,13 @@ add_subdirectory(common)
 add_subdirectory(applications)
 
 # Check the unit test command line option
-if(${ENABLE_TESTS})
+if(${TESTS})
   # Add the test directory to the build system
   add_subdirectory(test)
 endif()
 
 # Let's generate some documentation
-if(${BUILD_DOCS})
+if(${DOCS})
   find_package(Doxygen)
   if (DOXYGEN_FOUND)
     # set input and output files

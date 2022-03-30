@@ -4,45 +4,43 @@
 
 # This is not intended to replace using the real CMakes, but makes the typical case easier to run.
 
-PREFIX=build
+PREFIX?=build
 
 # Get the current system architecture if we are not cross-compiling
-ifndef ARCH
-	ARCH=$(shell uname -p)
-endif
+ARCH?=$(shell uname -p)
 # Get the current system OS if we are not cross-compiling
-ifndef OS
-	OS=$(shell echo $(shell uname) | tr A-Z a-z)
-endif
-# Get the build type (default: debug)
-ifndef TYPE
-	TYPE=debug
-endif
-
-# Generate the output directory
-ifndef BUILD_DIR
-	BUILD_DIR="${PREFIX}/${OS}-${ARCH}-${TYPE}"
-endif
-
+OS?=$(shell echo $(shell uname) | tr A-Z a-z)
+# Which compiler would you like to use?
+COMPILER?=gcc
+# Get the build type debug/release
+TYPE?=debug
 # The number of cores to build from
-ifndef CORES
-	CORES=8
-endif
+CORES?=8
+
+# Build the tests
+TESTS?=OFF
+# Build the docs
+DOCS?=OFF
+
+# Generate the output directory using a method
+define generate_build_dir
+"${PREFIX}/${OS}-${ARCH}-${TYPE}"
+endef
 
 ## The default target
 all::
-	# Generate the Makefiles from the current source tree using Wrapping
-	cmake -H. -B${BUILD_DIR} -DCMAKE_TOOLCHAIN_FILE=toolchain/${OS}-${ARCH}.cmake -DENABLE_TESTS=OFF && cmake --build ${BUILD_DIR} -- -j ${CORES}
+	cmake -H. -B$(call generate_build_dir,${COMPILER}) -DCMAKE_TOOLCHAIN_FILE=.cmake/toolchain/${OS}-${COMPILER}-${ARCH}.cmake -DTESTS=${TESTS} -DDOCS=${DOCS} && cmake --build $(call generate_build_dir,${COMPILER}) -- -j ${CORES}
 
-## The test target
-tests::
-	# Generate the Makefiles from the current source tree using Wrapping
-	cmake -H. -B${BUILD_DIR} -DENABLE_TESTS=ON && cmake --build ${BUILD_DIR} -- -j ${CORES}
+## The default target
+coverage:: TESTS=ON
+coverage:: all
+	cmake --build $(call generate_build_dir,${COMPILER}) --target coverage
 
-## The documentation target
-docs::
+## The static analyzer target
+static-analysis::
 	# Generate the Makefiles from the current source tree using Wrapping
-	cmake -H. -B${BUILD_DIR} -DBUILD_DOCS=ON && cmake --build ${BUILD_DIR} -- -j ${CORES}
+	scan-build -k cmake -H. -B$(call generate_build_dir,$@) -DCMAKE_TOOLCHAIN_FILE=.cmake/toolchain/$@.cmake
+	cd $(call generate_build_dir,$@) && scan-build -k -o ./results make -j ${CORES}
 
 ## The clean targets
 clean::

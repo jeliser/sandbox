@@ -1,5 +1,5 @@
 # Include the GTEST CMake configuration file.  I didn't want to pollute the main file with GTEST stuff
-include(CMakeLists-gtest.txt)
+include(.CMakeLists-gtest.txt)
 
 # Add all of the unit test files into a single unit test application
 file(GLOB_RECURSE UNIT_TEST_SOURCE_FILES *.cpp)

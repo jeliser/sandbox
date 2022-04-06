@@ -15,6 +15,14 @@ target_link_libraries(${UNIT_TEST} "${binary_dir}/lib/libgtest.a" pthread)
 string(APPEND CMAKE_C_FLAGS "--coverage -fprofile-arcs -ftest-coverage ")
 string(APPEND CMAKE_CXX_FLAGS "--coverage -fprofile-arcs -ftest-coverage ")
 
+add_custom_target(run-tests
+  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${UNIT_TEST}
+  DEPENDS ${UNIT_TEST})
+
+add_custom_target(valgrind
+  COMMAND valgrind --tool=memcheck --leak-check=yes ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${UNIT_TEST} &> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${UNIT_TEST}.val
+  DEPENDS ${UNIT_TEST})
+
 set(GCOV_EXCLUDE "\\\"/usr/*\\\" \\\"*/gtest*\\\"")
 add_custom_target(coverage
   COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/run_tests --gtest_filter=AnotherExample.SampleTest_PASS

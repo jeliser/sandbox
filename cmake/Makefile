@@ -31,10 +31,21 @@ endef
 all::
 	cmake -H. -B$(call generate_build_dir,${COMPILER}) -DCMAKE_TOOLCHAIN_FILE=.cmake/toolchain/${OS}-${COMPILER}-${ARCH}.cmake -DTESTS=${TESTS} -DDOCS=${DOCS} && cmake --build $(call generate_build_dir,${COMPILER}) -- -j ${CORES}
 
-## The default target
-coverage:: TESTS=ON
-coverage:: all
+## The test(s) target
+test:: TESTS=ON
+test:: all
+tests:: test
+
+run-tests: test
+	cmake --build $(call generate_build_dir,${COMPILER}) --target run-tests
+
+## The code coverage target
+coverage:: tests
 	cmake --build $(call generate_build_dir,${COMPILER}) --target coverage
+
+## The code coverage target
+valgrind:: tests
+	cmake --build $(call generate_build_dir,${COMPILER}) --target valgrind
 
 ## The static analyzer target
 static-analysis::

@@ -41,7 +41,8 @@ endif()
 # Create the output directories
 add_custom_target(build-time-make-directory ALL 
   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/lib
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin) 
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin
+  COMMAND rm -f ${CMAKE_BINARY_DIR}/../latest && ln -sf ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/../latest)
 
 # Set the output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

@@ -12,6 +12,9 @@ CC=g++ -std=c++14 -g # C++14
 dir:
 	mkdir -p $(BIN_PATH)
 
+asan_test: dir
+	$(CC) $(SRC_PATH)/asan_test.cpp -o $(BIN_PATH)/asan_test -fsanitize=address
+
 code_coverage: dir
 	$(CC) $(SRC_PATH)/pointers.cpp -o $(BIN_PATH)/code_coverage -fprofile-arcs -ftest-coverage
 
@@ -53,3 +56,6 @@ CODE_FORMAT_FILES=-iname "*.h" -o -iname "*.hpp" -o -iname "*.cpp" -o -iname "*.
 format::
 	@echo "Formatting the source code"
 	@find . ${CODE_FORMAT_FILES} | xargs clang-format -style=file -i -sort-includes=false
+
+docker::
+	docker build -t cpp:latest -f .Dockerfile .

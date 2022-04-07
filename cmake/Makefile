@@ -81,3 +81,6 @@ clang-format::
 	@find ./applications -iname *.h -o -iname *.cpp | xargs clang-format -i 
 	@find ./common -iname *.h -o -iname *.cpp | xargs clang-format -i 
 	@find ./test -iname *.h -o -iname *.cpp | xargs clang-format -i 
+
+docker::
+	docker build -t cmake:latest -f .Dockerfile .

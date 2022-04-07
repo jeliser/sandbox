@@ -7,6 +7,7 @@ int main() {
 
   std::string too_long;
   too_long.assign('t', 100);
+
   // This will crash address sanitizer :(
-  // too_long.assign("t", 100);
+  too_long.assign("t", 100);
 }

@@ -29,7 +29,7 @@ endef
 
 ## The default target
 all::
-	cmake -H. -B$(call generate_build_dir,${COMPILER}) -DCMAKE_TOOLCHAIN_FILE=.cmake/toolchain/${OS}-${COMPILER}-${ARCH}.cmake -DTYPE=${TYPE} -DTESTS=${TESTS} -DDOCS=${DOCS} && cmake --build $(call generate_build_dir,${COMPILER}) -- -j ${CORES}
+	cmake -H. -B$(call generate_build_dir,${COMPILER}) -DCMAKE_TOOLCHAIN_FILE=.cmake/toolchain/${OS}-${COMPILER}-${ARCH}.cmake -DTESTS=${TESTS} -DDOCS=${DOCS} && cmake --build $(call generate_build_dir,${COMPILER}) -- -j ${CORES}
 
 ## The debug target
 debug:: TYPE=debug

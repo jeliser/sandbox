@@ -1,7 +1,14 @@
 # Check the CMake version
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 2.7.0)
 # Declare the project name (THIS NEEDS TO HAPPEN BEFORE ANY OTHER PROCESSING)
-project(cpp-cmake-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
+if(${CMAKE_VERSION} VERSION_LESS "3.0.0")
+  ## CMake < 3.0
+  project(cpp-cmake-examples)
+else()
+  ## CMake >= 3.0  (You can't have the additional arguments)
+  cmake_policy(SET CMP0048 NEW)
+  project(cpp-cmake-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
+endif()
 
 # Command line option to disable the unit tests
 option(TESTS "Enable unit tests" OFF) 
@@ -10,12 +17,12 @@ option(DOCS "Build the documentation" OFF)
 # Validate the matched compilers
 if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
   # C compiler
-  set(REQUIRED_C_COMPILER_VERSION 7.3.0)
+  set(REQUIRED_C_COMPILER_VERSION 4.3.0)
   if(CMAKE_C_COMPILER_VERSION VERSION_LESS REQUIRED_C_COMPILER_VERSION)
     message(FATAL_ERROR "Insufficient ${CMAKE_C_COMPILER} version: ${CMAKE_C_COMPILER_VERSION} < ${REQUIRED_C_COMPILER_VERSION}")
   endif()
   # C++ compiler
-  set(REQUIRED_CXX_COMPILER_VERSION 7.3.0)
+  set(REQUIRED_CXX_COMPILER_VERSION 4.3.0)
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS REQUIRED_CXX_COMPILER_VERSION)
     message(FATAL_ERROR "Insufficient ${CMAKE_CXX_COMPILER} version: ${CMAKE_CXX_COMPILER_VERSION} < ${REQUIRED_CXX_COMPILER_VERSION}")
   endif()
@@ -50,7 +57,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Set the compiler defaults
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 # Add the common directory to the build system
 add_subdirectory(common)

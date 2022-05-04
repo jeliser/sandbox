@@ -1,4 +1,6 @@
-function y = sample(i, x)
+% Please let us not have to get to this: https://www.mathworks.com/help/simulink/slref/coder.ceval.html
+
+function y = sample(i, x) %#codegen
   fx = lookup(i)
   y = fx(x);
 end

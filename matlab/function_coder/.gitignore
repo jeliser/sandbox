@@ -1,0 +1,6 @@
+codegen/
+*.swp
+*.asv
+*.prj
+*.mex*
+

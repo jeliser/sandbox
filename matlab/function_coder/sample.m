@@ -1,31 +1,43 @@
 % Please let us not have to get to this: https://www.mathworks.com/help/simulink/slref/coder.ceval.html
 
+% sample is the entry point function
 function y = sample(i, x) %#codegen
-  if coder.target('MATLAB')
-    % Executing in MATLAB, call MATLAB equivalent of
-    % C function foo
-    f = @computeSquare;
-    y = f(x);
-  else
-    y = 0;
-    % Executing in generated code, call C function foo
-    coder.updateBuildInfo('addSourceFiles','computeSquare.c');
-    %coder.cinclude('foo.h');
-    y = coder.ceval('computeSquare', x);
-  end
+  y = callback_matlab(i, x);
 
-  %fx = lookup(i)
-  %y = fx(x);
+%   if coder.target('MATLAB')
+%     y = callback_matlab(i, x);
+%   else
+%     y = 0;
+%     % Executing in generated code, call C function foo
+%     coder.updateBuildInfo('addSourceFiles','computeSquare.c');
+%     %coder.cinclude('foo.h');
+%     funcs = {
+%       'computeSquare'
+%     };
+%     y = coder.ceval(i, x); %#codegen
+%   end
+% 
+%   %fx = lookup(i)
+%   %y = fx(x);
 end
 
-function func = lookup(i)
-  funcs = {
-    @computeSquare
-    @computeCube
-    @computeSquareRoot
-  };
-  
-  func = funcs{i};
+function y = callback_matlab(i, x) %#codegen
+  % Executing in MATLAB
+  y = lookup(i, x);
+end
+
+function y = lookup(i, x) %#codegen
+  y = nan;
+  if i == 1
+    f = @computeSquare;
+    y = f(x);
+  elseif i == 2
+    f = @computeCube;
+    y = f(x);
+  elseif i == 3
+    f = @computeSquareRoot;
+    y = f(x);
+  end
 end
 
 %% Sample function callbacks

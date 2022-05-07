@@ -1,42 +1,18 @@
 % Please let us not have to get to this: https://www.mathworks.com/help/simulink/slref/coder.ceval.html
 
 % sample is the entry point function
-function y = sample(i, x) %#codegen
-  y = callback_matlab(i, x);
-
-%   if coder.target('MATLAB')
-%     y = callback_matlab(i, x);
-%   else
-%     y = 0;
-%     % Executing in generated code, call C function foo
-%     coder.updateBuildInfo('addSourceFiles','computeSquare.c');
-%     %coder.cinclude('foo.h');
-%     funcs = {
-%       'computeSquare'
-%     };
-%     y = coder.ceval(i, x); %#codegen
-%   end
-% 
-%   %fx = lookup(i)
-%   %y = fx(x);
+function y = sample(str, x) %#codegen
+  y = lookup(str, x);
 end
 
-function y = callback_matlab(i, x) %#codegen
-  % Executing in MATLAB
-  y = lookup(i, x);
-end
-
-function y = lookup(i, x) %#codegen
+function y = lookup(str, x) %#codegen
   y = nan;
-  if i == 1
-    f = @computeSquare;
-    y = f(x);
-  elseif i == 2
-    f = @computeCube;
-    y = f(x);
-  elseif i == 3
-    f = @computeSquareRoot;
-    y = f(x);
+  if isequal(str, func2str(@computeSquare))
+    y = computeSquare(x);
+  elseif isequal(str, func2str(@computeCube))
+    y = computeCube(x);
+  elseif isequal(str, func2str(@computeSquareRoot))
+    y = computeSquareRoot(x);
   end
 end
 

@@ -5,6 +5,9 @@ function y = sample_int(i, x) %#codegen
   y = lookup(i, x);
 end
 
+% This will codegen, and obviously it really sucks to have to hand define all this stuff, but function_handles as
+% entry point arguements OR dynamic function handle references do not work in codegen.  Only statically defined
+% function handles will work (eg: compile time substitutions)
 function y = lookup(i, x) %#codegen
   y = nan;
   if i == 0

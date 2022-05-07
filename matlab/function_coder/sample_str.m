@@ -1,7 +1,7 @@
 % Please let us not have to get to this: https://www.mathworks.com/help/simulink/slref/coder.ceval.html
 
 % sample is the entry point function
-function y = sample(str, x) %#codegen
+function y = sample_str(str, x) %#codegen
   y = lookup(str, x);
 end
 

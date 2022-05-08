@@ -1,13 +1,19 @@
 % Add the utility lookup path
 addpath('utils');
 
-% The predefined list of functions
-funcs = {@computeSquare; @computeCube; @computeSquareRoot};
+% Get a listing of all the available functions that we can use as callbacks
+files = dir('utils\**\*.m');
+funcs = cell(numel(files), 1);
 iterations = 1000000;
 
+% Grab all of the available functions
+for i = 1 : numel(files)
+  funcs{i} = str2func(strrep(files(i).name, '.m', ''));
+end
+
 % Expand and iterate over all the functions and call them in different ways and time them
-for j = 10:25:100
-%for j = 2
+%for j = 10:25:100
+for j = 2
   % Let's build configurations that we'll iterate through.
   s = struct([]);
   for i = numel(funcs):-1:1 % By iterating backwards, the struct array is preallocated
@@ -23,7 +29,7 @@ for j = 10:25:100
   % Call the functions using integer indexing
   tic
   for i = 1:iterations
-    sample_int(mod(i, numel(s))+1, 5);
+    entry_point_as_int(mod(i, numel(s))+1, 5);
   end
   t = toc;
   fprintf('  Calling as int: %0.3f seconds\n', t)
@@ -31,7 +37,7 @@ for j = 10:25:100
   % Call the functions using function callbacks
   tic
   for i = 1:iterations
-    sample_func(s(mod(i, numel(s))+1).funcs_as_func, 5);
+    entry_point_as_func(s(mod(i, numel(s))+1).funcs_as_func, 5);
   end
   t = toc;
   fprintf('  Calling as func: %0.3f seconds\n', t)
@@ -39,7 +45,7 @@ for j = 10:25:100
   % Call the functions using string indexing
   tic
   for i = 1:iterations
-    sample_str(s(mod(i, numel(s))+1).funcs_as_str, 5);
+    entry_point_as_str(s(mod(i, numel(s))+1).funcs_as_str, 5);
   end
   t = toc;
   fprintf('  Calling as string: %0.3f seconds\n', t)

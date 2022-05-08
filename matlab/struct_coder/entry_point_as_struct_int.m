@@ -1,13 +1,16 @@
 % Please let us not have to get to this: https://www.mathworks.com/help/simulink/slref/coder.ceval.html
 
 % This is the entry point method for codegen
-function y = entry_point_as_struct_int(i, x) %#codegen
-  % A bunch of codegen compliant code is here
-
-  % This is the codegen statement under test
-  y = lookup(i, x);
-
-  % A bunch of codegen compliant code is here
+function [y] = entry_point_as_struct_int(scenario) %#codegen
+  y = NaN(size(scenario));
+  for i = 1 : numel(scenario)
+    % A bunch of codegen compliant code is here
+  
+    % This is the codegen statement under test
+    y(i) = lookup(scenario(i).as_int, scenario(i).arg);
+  
+    % A bunch of codegen compliant code is here
+  end
 end
 
 % This will codegen, and obviously it really sucks to have to hand define all this stuff, but function_handles as

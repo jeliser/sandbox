@@ -19,17 +19,3 @@ function y = lookup(i, x) %#codegen
   end
 end
 
-%% Sample function callbacks
-
-function y = computeSquare(x)
-  y = x.^2;
-end
-
-function y = computeCube(x)
-  y = x.^3;
-end
-
-function y = computeSquareRoot(x)
-  y = sqrt(x);
-end
-

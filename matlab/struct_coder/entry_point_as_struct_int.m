@@ -2,14 +2,16 @@
 
 % This is the entry point method for codegen
 function [y] = entry_point_as_struct_int(scenario) %#codegen
-  y = NaN(size(scenario));
-  for i = 1 : numel(scenario)
-    % A bunch of codegen compliant code is here
-  
-    % This is the codegen statement under test
-    y(i) = lookup(scenario(i).as_int, scenario(i).arg);
-  
-    % A bunch of codegen compliant code is here
+  y = NaN(scenario.iterations, numel(scenario.commands));
+  for i = 1:scenario.iterations
+    for j = 1 : numel(scenario.commands)
+      % A bunch of codegen compliant code is here
+    
+      % This is the codegen statement under test
+      y(i, j) = lookup(scenario.commands(j).func_as_int, scenario.commands(j).arg);
+    
+      % A bunch of codegen compliant code is here
+    end
   end
 end
 
@@ -21,16 +23,17 @@ end
 % reason for a developer to have to maintain this listing.  This should be generated from a directory listing
 % of functions that you can call.
 function y = lookup(i, x) %#codegen
+  % Preallocate the return value
   y = nan; % Need to talk about what function return values are ... codegen doesn't support dynamic return values
 
   % This comparision lookup cannot be done using an array indexing.  The codegen process requires statically defined
   % code paths, so you must define it as an if/elseif sequence.
-  % TODO: Are there codegen alternatives to this the might be more efficent?
-  if i == 0
+  % TODO: Are there codegen alternatives to this that might be more efficent?
+  if i == 1
     y = computeSquare(x);
-  elseif i == 1
-    y = computeCube(x);
   elseif i == 2
+    y = computeCube(x);
+  elseif i == 3
     y = computeSquareRoot(x);
   end
 end

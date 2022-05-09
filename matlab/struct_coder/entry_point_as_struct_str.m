@@ -17,14 +17,16 @@ function [y] = entry_point_as_struct_str(scenario) %#codegen
   end
 end
 
-function y = lookup(str, x) %#codegen
+function y = lookup(str, varargin) %#codegen
   y = nan;
   if isequal(str, func2str(@computeSquare))
-    y = computeSquare(x);
+    y = computeSquare(varargin{:});
   elseif isequal(str, func2str(@computeCube))
-    y = computeCube(x);
+    y = computeCube(varargin{:});
   elseif isequal(str, func2str(@computeSquareRoot))
-    y = computeSquareRoot(x);
+    y = computeSquareRoot(varargin{:});
+  elseif isequal(str, func2str(@addValues))
+    y = addValues(varargin{:});
   end
 end
 

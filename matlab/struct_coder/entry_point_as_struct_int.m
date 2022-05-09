@@ -1,10 +1,10 @@
 % Please let us not have to get to this: https://www.mathworks.com/help/simulink/slref/coder.ceval.html
 
 % This is the entry point method for codegen
-function [y] = entry_point_as_struct_int(scenario, iter, num_cmds) %#codegen
-  y = NaN(iter, num_cmds);
-  for i = 1:scenario.iterations
-    for j = 1 : num_cmds
+function [y] = entry_point_as_struct_int(scenario) %#codegen
+  y = NaN(scenario.iterations, numel(scenario.commands));
+  for i = 1 : scenario.iterations
+    for j = 1 : numel(scenario.commands)
       % A bunch of codegen compliant code is here
     
       % This is the codegen statement under test

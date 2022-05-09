@@ -37,7 +37,7 @@ for j = 2
 
   % Call the functions using integer indexing
   tic
-  entry_point_as_struct_int(scenario, scenario.iterations, numel(scenario.commands));
+  entry_point_as_struct_int(scenario);
   t = toc;
   fprintf('  Calling as int: %0.3f seconds\n', t)
 

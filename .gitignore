@@ -11,3 +11,4 @@ bin/
 *.mp4
 demo.docx
 generated_data/
+doc/*.png

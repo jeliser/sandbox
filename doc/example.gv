@@ -1,0 +1,47 @@
+//C-style comments can be added
+
+/* Multi-line comments are
+ * valid too
+ * Note: Lines end with a semicolon
+ */
+
+/* This line defines what kind of graph we're making ('digraph'=directed graph)
+ * and the name of the digraph ('finite_state_machine')
+ */
+ 
+digraph finite_state_machine {
+	//Define the nodes/states in the system and their style here
+
+	
+	/*These are the entry and exit nodes for the system. 
+	 * They are small, solid black circles.
+	 * Both are listed on the same line because they all have the same properties
+	 */
+	 
+	node [shape=point,label=""]ENTRY,EXIT;
+	
+	//This line defines a new node style: the circle
+
+	node [shape=circle];
+	
+	/* All the nodes defined here will be circles. Additional attributes defined
+	 * for each node will be added on to the attributes listed above.
+	 */
+	 
+	 A[label="A"];		//Label attributes are placed inside the node
+
+	 B[label="Node\nB"];	//Newlines are allowed in labels
+
+	 C[label="C"];
+	 
+	 //Below are all of the definition of the edges that connect the nodes
+
+	 //Edges can have labels too
+
+	 ENTRY->A [label="Initialization"];
+	 A->B; 
+	 B->A;
+	 A->C;
+	 C->EXIT[label="Shutdown"];
+
+}

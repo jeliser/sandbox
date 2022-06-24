@@ -1,2 +1,8 @@
 wiringpi
 pigpio
+picamera
+RPi.GPIO
+board
+neopixel
+adafruit-blinka
+adafruit-circuitpython-max31856

@@ -2,6 +2,8 @@
 
 ROOT=$( pwd )
 
+sudo apt install -y portaudio19-dev python-pyaudio python3-pyaudio
+
 if [[ $( cat /boot/config.txt | grep dtoverlay | wc -l ) -eq 0 ]]; then
   echo "Setting up the GPIO"
   echo "dtoverlay=spi0-1cs,cs0_pin=25" | sudo tee -a /boot/config.txt

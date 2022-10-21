@@ -58,6 +58,7 @@ int main (int argc, char * argv[]) {
 
   // This will cause a compilation time failure
   //u64.set(444);
+  u64.get() == Uint8Flags::True;
 
   return 0;
 }

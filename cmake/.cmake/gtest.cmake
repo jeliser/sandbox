@@ -1,5 +1,5 @@
 # We need thread support
-find_package(Threads REQUIRED)
+#find_package(Threads REQUIRED)
 
 # Enable ExternalProject CMake module
 include(ExternalProject)
@@ -7,13 +7,16 @@ include(ExternalProject)
 # Download and install GoogleTest
 ExternalProject_Add(
     gtest
-    URL https://github.com/google/googletest/archive/master.zip
+    #URL https://github.com/google/googletest/archive/master.zip
+    URL https://github.com/google/googletest/archive/refs/tags/release-1.8.0.zip
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-    # Disable install step
-    INSTALL_COMMAND ""
     ## This is required to have gtest cross-compiled if you are using a cmake toolchain file
     CMAKE_ARGS -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
                -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+               -DCMAKE_AR=${CMAKE_AR} -DCMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
+               -DCMAKE_GENERATOR=${CMAKE_GENERATOR} -DCMAKE_LINKER=${CMAKE_LINKER}
+    # Disable install step
+    INSTALL_COMMAND ""
 )
 
 # Get GTest source and binary directories from CMake project

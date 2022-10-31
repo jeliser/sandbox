@@ -7,12 +7,15 @@ if(${CMAKE_VERSION} VERSION_LESS "3.0.0")
 else()
   ## CMake >= 3.0  (You can't have the additional arguments)
   cmake_policy(SET CMP0048 NEW)
+  cmake_policy(SET CMP0012 NEW)
   project(cpp-cmake-examples VERSION 0.0.0.0 LANGUAGES C;CXX)
 endif()
 
 # Command line option to disable the unit tests
 option(TESTS "Enable unit tests" OFF) 
+option(TEST_ARGS "Command line arguments to be passed to the test executor" "") 
 option(DOCS "Build the documentation" OFF)
+option(LIB_TYPE "The type of oject to create: SHARED, STATIC.  Default: STATIC" STATIC)
 
 # Validate the matched compilers
 if(${CMAKE_SYSTEM_NAME} MATCHES Linux)

@@ -1,15 +1,12 @@
 #include "gmock/gmock.h"
 
-using ::testing::AtLeast;
 using ::testing::_;
+using ::testing::AtLeast;
 using ::testing::Return;
 
 typedef struct {
-enum type {
-  fail = 0u,
-  success = 1u
-};
-}return_val_t;
+  enum type { fail = 0u, success = 1u };
+} return_val_t;
 
 class Turtle {
   virtual return_val_t::type Walk() = 0;
@@ -32,7 +29,7 @@ class MockTurtleInterface : public Turtle {
   MOCK_METHOD1(Eat, uint32_t(uint32_t));
 };
 
-/* 
+/*
  * Test a simple interface class type
  */
 TEST(MockTest, SampleTest_PASS) {
@@ -41,12 +38,10 @@ TEST(MockTest, SampleTest_PASS) {
 
   // Load all the expectations for how the class will be called
   EXPECT_CALL(turtle, Walk())
-    .Times(AtLeast(3u))
-    .WillOnce(Return(return_val_t::success))
-    .WillRepeatedly(Return(return_val_t::fail));
-  EXPECT_CALL(turtle, Eat(100u))
-    .Times(AtLeast(1u))
-    .WillOnce(Return(90u));
+      .Times(AtLeast(3u))
+      .WillOnce(Return(return_val_t::success))
+      .WillRepeatedly(Return(return_val_t::fail));
+  EXPECT_CALL(turtle, Eat(100u)).Times(AtLeast(1u)).WillOnce(Return(90u));
 
   // Call the class
   EXPECT_EQ(turtle.Walk(), return_val_t::success);
@@ -55,7 +50,7 @@ TEST(MockTest, SampleTest_PASS) {
   EXPECT_EQ(turtle.Eat(100u), 90u);
 }
 
-/* 
+/*
  * Test a simple interface class type
  */
 TEST(MockTest, SampleTest_FAIL) {
@@ -68,4 +63,3 @@ TEST(MockTest, SampleTest_FAIL) {
 
   // Don't call the class ... we want to fail
 }
-

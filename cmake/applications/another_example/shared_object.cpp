@@ -1,23 +1,19 @@
 #include "shared_object.h"
+
 #include <experimental/filesystem>
 
-int hello_world()
-{
+int hello_world() {
   return 12345;
 }
 
-void HelloWorld::print()
-{
+void HelloWorld::print() {
   // Check that the build system is actually using c++17
-  auto exists =
-    std::experimental::filesystem::exists("/some/made/up/directory");
+  auto exists = std::experimental::filesystem::exists("/some/made/up/directory");
 
-      printf("How are you?  %s", exists ? "true" : "false");
+  printf("How are you?  %s", exists ? "true" : "false");
 }
 
-std::list<std::string>
-HelloWorld::get_list()
-{
+std::list<std::string> HelloWorld::get_list() {
   return std::list<std::string>({"hello", "world", "this", "is", "a", "list"});
 }
 
@@ -27,8 +23,3 @@ std::unique_ptr<HelloWorldInterface>
 newInstance() {
   return std::make_unique<HelloWorld>();
 }
-
-
-
-
-

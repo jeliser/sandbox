@@ -13,4 +13,4 @@ file(GLOB GLOB_SOURCE_FILES "*.cpp")
 
 # Create the shared object using the generated directory name and the source files found by the GLOB operation
 add_library(${LIB_NAME} ${LIB_TYPE} ${GLOB_SOURCE_FILES})
-
+add_dependencies(${LIB_NAME} prebuild)

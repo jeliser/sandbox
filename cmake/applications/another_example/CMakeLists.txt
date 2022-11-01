@@ -11,3 +11,4 @@ include_directories(${CMAKE_SOURCE_DIR})
 # Create the shared object using the generated directory name and the source file explicitly
 add_library(${LIB_NAME} ${LIB_TYPE} shared_object.cpp)
 target_link_libraries(${LIB_NAME} stdc++fs)
+add_dependencies(${LIB_NAME} prebuild)

@@ -18,6 +18,7 @@ ExternalProject_Add(
     # Disable install step
     INSTALL_COMMAND ""
 )
+add_dependencies(gtest prebuild)
 
 # Get GTest source and binary directories from CMake project
 ExternalProject_Get_Property(gtest source_dir binary_dir)

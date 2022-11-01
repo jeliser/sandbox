@@ -17,6 +17,18 @@ option(TEST_ARGS "Command line arguments to be passed to the test executor" "")
 option(DOCS "Build the documentation" OFF)
 option(LIB_TYPE "The type of oject to create: SHARED, STATIC.  Default: STATIC" STATIC)
 
+# Include some top-level common macros
+#include(${CMAKE_SOURCE_DIR}/cmake/environment/common.cmake)
+
+# Make sure the LIB_TYPE is upper case
+string(TOUPPER ${LIB_TYPE} LIB_TYPE)
+
+get_filename_component(TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE} NAME)
+if(EXISTS ".cmake/environment/${TOOLCHAIN_FILE}")
+  include(.cmake/environment/${TOOLCHAIN_FILE})
+endif()
+
+
 # Validate the matched compilers
 if(${CMAKE_SYSTEM_NAME} MATCHES Linux)
   # C compiler
@@ -33,31 +45,21 @@ else()
   message(FATAL_ERROR "Unsupported system type: ${CMAKE_SYSTEM_NAME}")
 endif()  
 
-########
-## This section is probably depricated since CMAKE makes it EXTREMELY difficult to programmatically
-## generate an out-of-source build.  Everything I've found says it's impossible ... why, why!
-
-# Set the default build type if nothing is supplied
-#if(NOT CMAKE_BUILD_TYPE) 
-#  set(CMAKE_BUILD_TYPE "Debug")
-#endif()
-
-# Generate the output directory based on the build architecture and processor
-#set(GENERATED_BUILD_DIR "build-${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
-#string(TOLOWER ${GENERATED_BUILD_DIR} GENERATED_BUILD_DIR)
-#set(CMAKE_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${GENERATED_BUILD_DIR}")
-##########
-
-# Create the output directories
-add_custom_target(build-time-make-directory ALL 
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/lib
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin
-  COMMAND rm -f ${CMAKE_BINARY_DIR}/../latest && ln -sf ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/../latest)
-
 # Set the output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# Create the output directories
+add_custom_target(prebuild-make-directory ALL 
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+# Create the 'latest' symlink pointer
+get_filename_component(REL_BINARY_PATH ${CMAKE_BINARY_DIR} NAME)
+add_custom_target(prebuild-make-latest ALL 
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/..
+  COMMAND rm -f latest && ln -sf ${REL_BINARY_PATH} latest && ln -sf latest/lib lib)
+add_custom_target(prebuild ALL DEPENDS prebuild-make-directory prebuild-make-latest)
 
 # Set the compiler defaults
 set(CMAKE_CXX_STANDARD 14)

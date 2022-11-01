@@ -4,13 +4,15 @@ using ::testing::AtLeast;
 using ::testing::_;
 using ::testing::Return;
 
-typedef enum {
-  fail = 0,
-  success = 1
-} return_val_t;
+typedef struct {
+enum type {
+  fail = 0u,
+  success = 1u
+};
+}return_val_t;
 
 class Turtle {
-  virtual return_val_t Walk() = 0;
+  virtual return_val_t::type Walk() = 0;
   virtual uint32_t Eat(uint32_t amount) = 0;
 };
 
@@ -26,7 +28,7 @@ class MockTurtle : public Turtle {
 // URL gtest-1.8.0
 class MockTurtleInterface : public Turtle {
  public:
-  MOCK_METHOD0(Walk, return_val_t());
+  MOCK_METHOD0(Walk, return_val_t::type());
   MOCK_METHOD1(Eat, uint32_t(uint32_t));
 };
 

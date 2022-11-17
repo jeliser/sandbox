@@ -3,7 +3,7 @@
 #include <experimental/filesystem>
 
 int hello_world() {
-  return 12345;
+  return 99999;
 }
 
 void HelloWorld::print() {
@@ -14,7 +14,7 @@ void HelloWorld::print() {
 }
 
 std::list<std::string> HelloWorld::get_list() {
-  return std::list<std::string>({"hello", "world", "this", "is", "a", "list"});
+  return std::list<std::string>({"now", "we", "have", "another", "list"});
 }
 
 // This function is forcing all the methods in the Interface to be implemented.

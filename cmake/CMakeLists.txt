@@ -58,11 +58,18 @@ add_custom_target(prebuild-make-directory ALL
 get_filename_component(REL_BINARY_PATH ${CMAKE_BINARY_DIR} NAME)
 add_custom_target(prebuild-make-latest ALL 
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/..
-  COMMAND rm -f latest && ln -sf ${REL_BINARY_PATH} latest && ln -sf latest/lib lib)
+  COMMAND rm -f latest && ln -sf ${REL_BINARY_PATH} latest)
 add_custom_target(prebuild ALL DEPENDS prebuild-make-directory prebuild-make-latest)
 
 # Set the compiler defaults
 set(CMAKE_CXX_STANDARD 14)
+
+# Set the common flags
+set(COMMON_FLAGS "${WARNINGS} -Wall ")
+
+# Load the compiler flags
+string(APPEND CMAKE_C_FLAGS "${COMMON_FLAGS} ${BUILD_SPECIFIC_FLAGS} ")
+string(APPEND CMAKE_CXX_FLAGS "${COMMON_FLAGS} ${BUILD_SPECIFIC_FLAGS} ")
 
 # Add the common directory to the build system
 add_subdirectory(common)

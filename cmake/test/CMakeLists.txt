@@ -1,6 +1,9 @@
 # Include the GTEST CMake configuration file.  I didn't want to pollute the main file with GTEST stuff
 include(${CMAKE_SOURCE_DIR}/.cmake/gtest.cmake)
 
+# Add in the example libraries (this list can be generated if needed)
+set(EXAMPLE_LIBS example another_example)
+
 # Add all of the unit test files into a single unit test application
 file(GLOB_RECURSE UNIT_TEST_SOURCE_FILES *.cpp)
 
@@ -11,10 +14,10 @@ file(GLOB_RECURSE UNIT_TEST_SOURCE_FILES *.cpp)
 set(UNIT_TEST run_tests)
 add_executable(${UNIT_TEST} ${UNIT_TEST_SOURCE_FILES})
 # Add the unit test libraries
-add_dependencies(${UNIT_TEST} prebuild gtest)
+add_dependencies(${UNIT_TEST} ${EXAMPLE_LIBS} prebuild gtest)
 #target_link_libraries(${UNIT_TEST} "${binary_dir}/lib/libgtest.a" "${binary_dir}/lib/libgmock.a" pthread)  # URL gtest-master
-target_link_libraries(${UNIT_TEST} libgtest libgmock pthread) # URL gtest-1.8.0
-target_include_directories(${UNIT_TEST} PRIVATE ${PROJECT_INCLUDE})
+target_link_libraries(${UNIT_TEST} libgtest libgmock dl pthread) # URL gtest-1.8.0
+target_include_directories(${UNIT_TEST} PRIVATE ${PROJECT_INCLUDE} ${CMAKE_SOURCE_DIR})
 
 # code coverage target
 string(APPEND CMAKE_C_FLAGS "--coverage -fprofile-arcs -ftest-coverage ")
@@ -27,7 +30,7 @@ add_custom_target(run-tests
   WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
   DEPENDS ${UNIT_TEST})
 
-set(GCOV_EXCLUDE "\\\"/usr/*\\\" \\\"*/gtest*\\\"")
+set(GCOV_EXCLUDE "\\\"/usr/*\\\" \\\"*/gtest*\\\" \\\"*/opt*\\\"")
 add_custom_target(coverage
   COMMAND lcov --rc lcov_branch_coverage=1 --gcov-tool gcov --capture --directory . --output-file unfiltered.info
   ## Some reason the GCOV_EXCLUDE when included the COMMAND just doesn't escape the quotes correctly :(

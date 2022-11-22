@@ -1,5 +1,7 @@
 #include "gmock/gmock.h"
 
+#define nullptr NULL
+
 using ::testing::_;
 using ::testing::AtLeast;
 using ::testing::Return;
@@ -29,6 +31,20 @@ class MockTurtleInterface : public Turtle {
   MOCK_METHOD1(Eat, uint32_t(uint32_t));
 };
 
+class Jumper {
+  public:
+    MOCK_CONST_METHOD0(Jump, return_val_t::type*());
+};
+
+extern Jumper* jumper;
+
+const return_val_t::type* Jump() {
+  printf("HELLO %s\n", (jumper == nullptr) ? "TRUE" : "FALSE");
+  return (jumper == nullptr) ? nullptr : jumper->Jump();
+}
+
+Jumper* jumper = nullptr;
+
 /*
  * Test a simple interface class type
  */
@@ -48,6 +64,24 @@ TEST(MockTest, SampleTest_PASS) {
   EXPECT_EQ(turtle.Walk(), return_val_t::fail);
   EXPECT_EQ(turtle.Walk(), return_val_t::fail);
   EXPECT_EQ(turtle.Eat(100u), 90u);
+
+  // Try the global extern
+  Jumper grasshopper;
+  jumper = &grasshopper;
+  return_val_t::type ret_fail = return_val_t::fail;
+  return_val_t::type ret_success = return_val_t::success;
+
+  //EXPECT_EQ(grasshopper.Jump(), static_cast<return_val_t::type*>(nullptr));
+
+  // This must be defined before the first to grasshopper.Jump()
+  EXPECT_CALL(grasshopper, Jump())
+      .Times(AtLeast(1u))
+      .WillOnce(Return(&ret_fail))
+      .WillRepeatedly(Return(&ret_success));
+
+  EXPECT_EQ(*(grasshopper.Jump()), ret_fail);
+  EXPECT_EQ(*(grasshopper.Jump()), ret_success);
+  EXPECT_EQ(*(grasshopper.Jump()), ret_success);
 }
 
 /*

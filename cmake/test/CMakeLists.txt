@@ -26,7 +26,9 @@ string(APPEND CMAKE_CXX_FLAGS "--coverage -fprofile-arcs -ftest-coverage ")
 set(UNIT_TEST_XML_PATH "./test_xml")
 add_custom_target(run-tests
   COMMAND find ${CMAKE_BINARY_DIR} -name *gcd* | xargs rm -f
-  COMMAND bash -c "ASAN_OPTIONS=halt_on_error=0 LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/.leak.txt ./${UNIT_TEST} --gtest_output=xml:${UNIT_TEST_XML_PATH}/${UNIT_TEST}.xml ${TEST_ARGS}"
+  COMMAND bash -c "ASAN_OPTIONS=halt_on_error=0 LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/.leak.txt ./${UNIT_TEST} --gtest_output=xml:${UNIT_TEST_XML_PATH}/${UNIT_TEST}.xml ${TEST_ARGS}" | tee output.log
+  # If you happen to have a bunch of standalone unit tests, this will help know which ones failed
+  #COMMAND cat output.log | grep "  FAILED  " | wc -l >> /dev/null && printf \"\\n\\n--------------------\\n[   ALL FAILED TESTS   ]\\n\\n\" && cat output.log | grep "  FAILED  " | grep -v " listed below" | grep -v " ms" && printf \"\\n\"
   WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
   DEPENDS ${UNIT_TEST})
 

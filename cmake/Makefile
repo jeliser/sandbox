@@ -46,7 +46,7 @@ define generate_build_dir
 endef
 
 # Build the TEST_ARGS command line options
-GTEST_ARGS=--gtest_repeat=${TEST_REPEAT} --gtest_random_seed=${TEST_SEED} --gtest_filter=${TEST_FILTER} ${TEST_SHUFFLE} ${TEST_ARGS}
+GTEST_ARGS=--gtest_repeat=${TEST_REPEAT} --gtest_random_seed=${TEST_SEED} --gtest_filter=${TEST_FILTER} --gtest_color=yes ${TEST_SHUFFLE} ${TEST_ARGS}
 
 # Build the full set of options to be passed into cmake
 MAKE_OPTIONS?=--no-print-directory

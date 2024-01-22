@@ -5,6 +5,8 @@ from tqdm import tqdm
 from multiprocessing import Pool, freeze_support, RLock
 
 '''
+https://leimao.github.io/blog/Python-tqdm-Multiprocessing/#Many-Small-Processes
+
 > pip install tqdm
 '''
 

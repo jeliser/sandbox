@@ -7,9 +7,9 @@ services:
     volumes:
       - jellyfin-config:/config
       - jellyfin-cache:/cache
-      - jellyfin-media:/media
+      - /media/share/samba:/media
     restart: 'unless-stopped'
 volumes:
   jellyfin-config:
   jellyfin-cache:
-  jellyfin-media:
+  #jellyfin-media:

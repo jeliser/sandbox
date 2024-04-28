@@ -1,0 +1,26 @@
+export PATH=/usr/local/cuda-12.4/bin:$PATH
+export CUDA_PATH=/usr/local/cuda-12.4
+export CUDA_HOME=$CUDA_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+
+start_win10() {
+  # Replace these variables with your actual PCI ID and vendor:device ID
+  PCI_ID="0000:01:00.0"
+
+  if [ $( lspci -k -s $PCI_ID | grep "driver in use" | grep vfio-pci | wc -l ) -ne 1 ]; then
+    echo "Run 'load_vfio_pci_driver' to load the IOMMU GPU driver."
+    return 1
+  fi
+  virsh start win10
+}
+
+stop_win10() {
+  virsh shutdown win10
+}
+
+alias load_vfio_pci_driver='sudo ~/code/sandbox/scripts/load_vfio_pci_driver.sh'
+alias load_nvidia_driver='sudo ~/code/sandbox/scripts/load_nvidia_driver.sh'
+
+start_jellyfin() {
+  cd ~/code/sandbox/docker && docker-compose -f Dockerfile.jellyfin up
+}
